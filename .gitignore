@@ -47,3 +47,9 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# Ignore large iucn folder
+data/external/iucn
+
+# Ignore large unprocessed tree
+data/external/output.nex

@@ -1,0 +1,106 @@
+---
+title: "Correcting the surveillance landscape reveals the macroecological drivers of viral reservoir status in small mammals"
+format: docx
+---
+
+# Abstract
+
+**[REWRITE NEEDED]** * **Context:** Rodents/shrews are key reservoirs. 
+* **Problem:** We don't know if observed host patterns are real or artifacts of "streetlight" surveillance. 
+* **Approach:** Systematic review (1977-2025) + Data Synthesis + **[NEW]** Macroecological Trait Integration. 
+* **Bias Result:** We quantify massive taxonomic/geographic bias (Palearctic/Synanthropic focus). 
+* **Ecological Result [NEW]:** After statistically correcting for these biases using Dyadic GLMMs, we reveal the fundamental axes of reservoir suitability. *[Insert finding here: e.g., "Fast life-history pace and high metabolic turnover significantly predict reservoir status, independent of sampling effort."]* * **Evolutionary Context [NEW]:** Co-phylogenetic analysis reveals [Congruence/Incongruence], suggesting [Host Switching/Co-speciation] is the dominant driver of viral diversity.
+* **Conclusion:** Correcting anthropogenic bias reveals that reservoir status is a predictable biological trait, not just a stochastic occurrence.
+
+# Introduction
+
+## The Global Reservoir Problem **[KEEP]**
+* Broad context of ArHa viruses.
+* The shift from "one-host-one-virus" to complex multi-host systems.
+
+## The Surveillance Barrier **[KEEP/REFINE]**
+* The "Surveillance Landscape" concept.
+* The "Streetlight Effect" (bias towards knowns/synanthropes).
+* *Argument:* We cannot understand the ecology of these viruses if we are only looking at *Rattus* and *Mus* in high-income countries.
+
+## Theoretical Framework: Why Ecology Matters **[NEW SECTION]**
+* **[WRITE THIS]:** Introduce the macroecological hypotheses we want to test once bias is removed.
+    * **The "Fast Life-History" Hypothesis:** Theory suggests "fast-lived" (r-selected) species invest less in immunity and tolerate infections better.
+    * **Energetic Constraints:** Does high metabolic rate correlate with viral competency?
+    * **Ecological Opportunity:** Do generalists (diet/habitat) encounter more viruses?
+
+## Study Aims **[UPDATE]**
+1. Synthesize global data to quantify the "anthropogenic filter" (biases).
+2. **[NEW]** Leverage this data to test if Life History, Energetics, and Synanthropy predict host status *after* stripping away the surveillance bias.
+3. **[NEW]** Assess the evolutionary congruence between hosts and viruses to determine the role of host-switching vs. co-divergence (Placeholder for R).
+
+# Methods
+
+## Systematic Review & Data Harmonisation **[KEEP]**
+* (Your existing text on PubMed/WoS search, MDD taxonomy, etc.).
+
+## Integration of Macroecological Traits **[NEW METHODS]**
+* **[Action]:** Describe merging `harmonised_species` with COMBINE / Amniote / PanTHERIA / EltonTraits.
+* **[Action]:** PCA on life-history traits ("Pace of Life" axis).
+
+## Quantifying Surveillance Bias **[CONDENSE]**
+* Keep GAMs (sampling effort). 
+* Keep Geographic/Temporal descriptive methods (shortened).
+
+## Modeling Reservoir Probability (Dyadic GLMMs) **[EXPAND]**
+* **[Action]:** Update model specification.
+* **Definitions [UPDATE]:** Explicitly define the response variables: 
+    * *Current Infection:* Evidence of active virus (PCR/Culture/Seq).
+    * *Prior Exposure:* Evidence of antibodies (Serology).
+* *Hypothesis Variables:* `Life_History_PC1`, `Metabolic_Rate`, `Diet_Breadth`, `Synanthropy_Status`.
+* *Control Variable:* `log_sampling_effort`.
+* *Random Effects:* `(1|Host_Species) + (1|Pathogen_Species)`. 
+* *Phylogenetic Control [SUGGESTION]:* Consider adding a phylogenetic covariance matrix `(1|gr(phylo, cov = A))` to control for host relatedness in the trait analysis.
+
+## Evolutionary Analysis **[NEW - Placeholder for R]**
+* **[Action]:** Describe methods for viral taxonomy cleaning.
+* **[Action]:** Describe Co-phylogenetic methods (e.g., ParaFit, PACo, or simple Tanglegrams) to test for congruence between host and viral trees.
+
+# Results
+
+## The Anthropogenic Filter: Quantified Biases **[CONDENSE]**
+* **[KEEP]:** Palearctic/Nearctic bias.
+* **[KEEP]:** Synanthropy driving *sampling effort*.
+
+## Macroecological Drivers of Reservoir Status **[NEW & MAJOR SECTION]**
+* *Centerpiece for NEE.*
+* **[Action]:** Report Dyadic GLMM results.
+    * **Sampling Effort:** Confirm it explains the majority of variance.
+    * **Life History:** Report OR for "Fast" species.
+    * **Synanthropy:** Does it persist after adding life history? 
+    * **Current vs. Prior:** Do the drivers differ? (e.g., Maybe *Prior Exposure* is driven by age/longevity, while *Current Infection* is driven by acute susceptibility).
+
+## Evolutionary Congruence **[NEW - Placeholder for R]**
+* **[Action]:** Report results of the co-phylogeny. 
+* *Expected:* "While broad congruence exists at the Family level, frequent host-switching is evident at the genus/species level..." (or whatever the data shows).
+
+## The Genetic Data Gap **[KEEP]**
+* Disconnect between field sampling and GenBank availability.
+
+# Discussion
+
+## De-biasing Reveals Biology **[NEW ANGLE]**
+* "Raw surveillance data is a map of human activity. Correcting for this reveals that host competence is not random."
+
+## The "Fast-Lived" Reservoir **[NEW INTERPRETATION]**
+* Interpret Life History findings (Tolerance vs. Resistance).
+* Contrast with Bat/Filovirus literature if results differ.
+
+## Evolutionary Constraints vs. Ecological Opportunity **[INTEGRATION]**
+* Integrate **R's** findings: Is the reservoir status driven more by deep evolutionary history (co-phylogeny) or by current ecological traits (life history)?
+
+## A Roadmap for Predictive Surveillance **[KEEP/REFINE]**
+* Sample **"Fast-lived"** species currently ignored.
+* Sample **Non-synanthropic** species in the Palearctic/Nearctic.
+* Prioritize **Genetic sequencing**.
+
+# Supplementary Materials
+
+* **[MOVE HERE]:** Detailed descriptive stats.
+* **[MOVE HERE]:** **S's** Network topology breakdown (Current vs. Prior networks).
+* **[MOVE HERE]:** Subnational Gap Analysis maps.

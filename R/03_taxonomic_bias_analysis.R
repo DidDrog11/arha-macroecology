@@ -17,6 +17,8 @@ dir.create(here("output", "models"), recursive = TRUE, showWarnings = FALSE)
 dir.create(here("output", "figures"), recursive = TRUE, showWarnings = FALSE)
 
 # --- 2. Load Processed Data ---
+target_orders <- c("RODENTIA", "EULIPOTYPHLA", "SORICOMORPHA", "ERINACEOMORPHA")
+
 # A. The Global Checklist (All relevant Rodents/Eulipotyphla)
 global_traits <- read_rds(here("data", "processed", "trait_data.rds"))
 
@@ -52,35 +54,36 @@ bias_data <- global_traits |>
 # --- 4. Visualising Taxonomic Bias ---
 # 4.1. By Family
 family_bias <- bias_data |>
+  filter(toupper(order) %in% target_orders) |>
   drop_na(family) |>
   count(order, family, sampling_status) |>
-  group_by(family) |>
-  mutate(total = sum(n, na.rm = TRUE)) |>
-  rowwise() |>
-  mutate(prop_sampled = n / total) |>
-  ungroup() |>
-  filter(total > 2) |> 
-  arrange(order, desc(total)) |>
+  pivot_wider(names_from = sampling_status, values_from = n, values_fill = 0) |>
+  mutate(total = Sampled + `Not Sampled`,
+         prop_sampled = Sampled / total,
+         family_label = paste0(family, " (", total, ")")) |>
+  filter(total > 5) |> 
+  arrange(order, desc(prop_sampled)) |>
   mutate(family_label = fct_reorder(paste0(family, " (", total, ")"), total))
 
-p_family <- ggplot(family_bias, aes(x = family_label, y = n, fill = sampling_status)) +
-  geom_col(position = "fill") +
+p_family <- family_bias |>
+  pivot_longer(cols = c(Sampled, `Not Sampled`), names_to = "status", values_to = "count") |>
+  mutate(family_label = fct_reorder(family_label, total)) |>
+  ggplot(aes(x = family_label, y = count, fill = status)) +
   coord_flip() +
-  facet_grid(order ~ ., scales = "free_y", space = "free_y") +
-  scale_y_continuous(labels = scales::percent) +
-  scale_fill_manual(values = c("Not Sampled" = "grey80", "Sampled" = "steelblue")) +
-  labs(title = "Sampling Coverage by Family", x = NULL, y = "Proportion of Species") +
-  theme_minimal()
+  geom_col() +
+  scale_y_log10() +
+  facet_wrap(~order, scales = "free") +
+  scale_fill_manual(values = c("Not Sampled" = "grey90", "Sampled" = "steelblue")) +
+  labs(title = "Taxonomic Sampling Bias by Family", x = NULL, y = "Log10 Species Count") +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(), 
+        axis.text.x = element_text(size = 8),
+        legend.position = "bottom")
 
-ggsave(here("output", "figures", "taxonomic_bias_family.png"), p_family, width = 10, height = 12)
-
-# 4.2. By IUCN Status
-p_iucn <- bias_data |>
-  # Use IUCN column from trait_data_all (ensure column name matches, likely 'geographic_range_km2' etc sourced from IUCN)
-  # Note: You might need to check if 'iucn_status' exists in your trait_data_all. 
-  # If not, it might have been dropped in data_integration. 
-  # Assuming it's there based on your previous script logic:
+# 4.2. By synanthropy Status
+p_syn <- bias_data |>
   count(synanthropy_status, sampling_status) |>
+  mutate(synanthropy_status = replace_na(synanthropy_status, "Unknown")) |>
   drop_na(synanthropy_status) |>
   ggplot(aes(x = synanthropy_status, y = n, fill = sampling_status)) +
   geom_col(position = "fill") +
@@ -89,19 +92,17 @@ p_iucn <- bias_data |>
   labs(title = "Sampling Bias by Synanthropy", x = NULL, y = "Proportion") +
   theme_minimal()
 
-ggsave(here("output", "analysis_1", "bias_synanthropy.png"), p_iucn, width = 8, height = 6)
-
 
 # --- 5. Modelling Sampling Intensity (GAMs) ---
-
-message("--- Fitting GAMs for Sampling Effort ---")
-
-# Prepare Data for Modeling
-# We use the analytic dataset (imputed) because we need complete predictors
+# Analytic dataset (imputed) is used
 model_data <- host_traits_analytic |>
-  inner_join(sampling_summary, by = "gbif_id") |>
-  mutate(log_mass = log10(adult_mass_g),
-         log_range = log10(geographic_range_km2)) |>
+  left_join(sampling_summary, by = "gbif_id") |>
+  mutate(n_pathogen_samples = replace_na(n_pathogen_samples, 0), # Fill Zeros: If species isn't in sampling_summary, it was sampled 0 times
+         log_mass = log10(adult_mass_g),
+         log_range = log10(geographic_range_km2),
+         synanthropy_status = as.character(synanthropy_status),
+         synanthropy_status = replace_na(synanthropy_status, "Unknown"),
+         synanthropy_status = as.factor(synanthropy_status)) |>
   drop_na(log_mass, log_range)
 
 # Model 1: Core Predictors (Mass + Range + Synanthropy)
@@ -110,7 +111,7 @@ gam_effort <- gam(n_pathogen_samples ~
                     s(log_range, k = 5) + 
                     synanthropy_status,
                   data = model_data, 
-                  family = nb()) # Negative Binomial for overdispersed counts
+                  family = nb())  # Negative Binomial for overdispersed counts
 
 summary(gam_effort)
 plot(gam_effort, pages = 1, scheme = 1)
@@ -119,11 +120,7 @@ write_rds(gam_effort, here("output", "analysis_1", "models", "gam_sampling_effor
 
 
 # --- 6. Quantifying Phylogenetic Bias (Pagel's Lambda) ---
-
-message("--- Calculating Phylogenetic Signal in Sampling ---")
-
 # We test if sampling effort clusters by lineage
-# Ensure we match the tree tips
 lambda_data <- model_data |>
   filter(tip_label %in% mammal_tree$tip.label) |>
   column_to_rownames("tip_label")
@@ -138,25 +135,41 @@ lambda_res <- phylosig(mammal_tree, effort_vector, method = "lambda", test = TRU
 print(lambda_res)
 
 # Save result text
-capture.output(lambda_res, file = here("output", "analysis_1", "phylogenetic_bias_lambda.txt"))
-
+capture.output(lambda_res, file = here("output", "phylogenetic_bias_lambda.txt"))
 
 # --- 7. Pathogen Side Bias (Counts) ---
-# This remains largely similar to your original code
-
-virus_counts <- pathogen_data |>
+pathogens_per_host <- pathogen_data |>
   filter(pathogen_family %in% c("Arenaviridae", "Hantaviridae")) |>
-  count(pathogen_family, pathogen_species_cleaned, name = "n_records") |>
-  arrange(desc(n_records)) |>
-  head(20)
+  left_join(host_data |> select(host_record_id, host_species), by = "host_record_id") |>
+  drop_na(host_species, pathogen_species_cleaned) |>
+  separate_rows(pathogen_species_cleaned, sep = ",\\s*") |>
+  group_by(host_species) |>
+  summarise(n_viruses_tested = n_distinct(pathogen_species_cleaned)) |>
+  arrange(desc(n_viruses_tested))
 
-p_virus <- ggplot(virus_counts, aes(x = reorder(pathogen_species_cleaned, n_records), y = n_records)) +
-  geom_col(fill = "darkgreen") +
-  coord_flip() +
-  facet_wrap(~pathogen_family, scales = "free_y") +
-  labs(title = "Top 20 Sampled Pathogens", x = NULL, y = "Number of Records") +
-  theme_bw()
+p_breadth <- ggplot(pathogens_per_host, aes(x = n_viruses_tested)) +
+  geom_bar(fill = "steelblue") +
+  labs(title = "Surveillance Breadth", 
+       x = "Unique Viruses Tested per Host Species", y = "Count of Host Species") +
+  theme_minimal()
 
-ggsave(here("output", "analysis_1", "virus_sampling_counts.png"), p_virus, width = 10, height = 8)
+# --- 8. Host Pathogen ---
+top_hosts <- pathogens_per_host |> top_n(62, n_viruses_tested) |> pull(host_species)
 
-message("✅ Taxonomic Bias Analysis Complete.")
+heatmap_data <- pathogen_data |>
+  filter(pathogen_family %in% c("Arenaviridae", "Hantaviridae")) |>
+  left_join(host_data |> select(host_record_id, host_species), by = "host_record_id") |>
+  filter(host_species %in% top_hosts) |>
+  drop_na(pathogen_species_cleaned) |>
+  separate_rows(pathogen_species_cleaned, sep = ",\\s*") |>
+  group_by(host_species, pathogen_species_cleaned, pathogen_family) |>
+  summarise(n_tested = sum(number_tested, na.rm = TRUE)) |>
+  filter(n_tested > 0)
+
+p_heatmap <- ggplot(heatmap_data, aes(x = pathogen_species_cleaned, y = host_species, fill = log1p(n_tested))) +
+  geom_tile(color = "white") +
+  scale_fill_viridis_c(option = "magma", name = "log(N Tested)") +
+  facet_grid(~ pathogen_family, scales = "free_x", space = "free_x") +
+  labs(title = "Co-surveillance Landscape (Top Hosts)", x = "Pathogen", y = "Host") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 8))

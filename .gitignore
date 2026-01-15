@@ -53,3 +53,6 @@ data/external/iucn
 
 # Ignore large unprocessed tree
 data/external/output.nex
+
+# Ignore large model
+output/models/brms_dyadic_N49k.rds

@@ -14,7 +14,7 @@ pacman::p_load(tidyverse, here, ape, Rphylopars, phytools)
 # Create output directory
 dir.create(here("data", "analytic"), showWarnings = FALSE)
 
-# Load the ALIGNED outputs from 01_data_integration.R
+# Load the aligned outputs from 01_data_integration.R
 trait_data <- read_rds(here("data", "processed", "trait_data_phylo_matched.rds"))
 mammal_tree <- read.tree(here("data", "processed", "mammal_tree_matched.tre"))
 
@@ -44,6 +44,9 @@ pca_input <- imputed_log_data |>
 
 pca_res <- prcomp(pca_input, center = TRUE, scale. = TRUE)
 
+# Save PCA
+write_rds(pca_res, here("output", "models", "pca_result.rds"))
+
 # Extract first 3 PCs
 pc_scores <- as.data.frame(pca_res$x[, 1:3]) |>
   rename(
@@ -67,10 +70,8 @@ print(loadings[, 1:3])
 final_host_traits <- trait_data |> 
   left_join(imputed_log_data, by = "tip_label", suffix = c("", "_log_imputed")) |> 
   bind_cols(pc_scores) |> 
-  select(
-    tip_label, gbif_id, 
-    pace_of_life_pc1, repro_strategy_pc2, maternal_investment_pc3, 
-    everything()
-  )
+  select(tip_label, gbif_id, 
+         pace_of_life_pc1, repro_strategy_pc2, maternal_investment_pc3, 
+         everything())
 
 write_rds(final_host_traits, here("data", "analytic", "host_traits_final.rds"))

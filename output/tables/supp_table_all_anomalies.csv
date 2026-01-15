@@ -1,0 +1,497 @@
+GID_2,n_hosts,predicted,log_residual,type,COUNTRY,NAME_1,NAME_2
+ARG.4.2_1,2912,95.5654476509498,1.4795187265233478,Hotspot (Oversampled),Argentina,Chubut,Cushamen
+ARG.15.7_1,992,24.627651988167283,1.5882404306566251,Hotspot (Oversampled),Argentina,Neuquén,Huiliches
+ARG.21.4_1,8502,44.456517264228694,2.2719760206939483,Hotspot (Oversampled),Argentina,Santa Fe,Constitución
+BEL.3.3_1,0,716.6697885896,-2.8559246643248475,Coldspot (Undersampled),Belgium,Wallonie,Liège
+BGR.11.6_1,391,4.05014228912649,1.8899824523647837,Hotspot (Oversampled),Bulgaria,Pazardzhik,Pazardzhik
+BRA.8.64_2,126,2.2748380184243677,1.5886138973744828,Hotspot (Oversampled),Brazil,Espírito Santo,Santa Teresa
+BRA.10.12_2,104,1.7090437738207698,1.588373276474858,Hotspot (Oversampled),Brazil,Maranhão,Anajatuba
+BRA.12.22_2,459,11.14419896840223,1.5783889576681063,Hotspot (Oversampled),Brazil,Mato Grosso,Campo Novo do Parecis
+BRA.11.22_2,143,4.028957786757278,1.4568845019416763,Hotspot (Oversampled),Brazil,Mato Grosso do Sul,Cassilândia
+BRA.13.825_2,763,20.86429004315135,1.543357978671517,Hotspot (Oversampled),Brazil,Minas Gerais,Uberlândia
+BRA.16.57_2,90,2.1928935046464413,1.4548569589415936,Hotspot (Oversampled),Brazil,Paraná,Campina Grande do Sul
+BRA.16.125_2,1408,1.5709413666794203,2.7388188209464457,Hotspot (Oversampled),Brazil,Paraná,General Carneiro
+BRA.16.159_2,74,0.7206219210741778,1.6393758117914925,Hotspot (Oversampled),Brazil,Paraná,Itambaracá
+BRA.16.282_2,45,0.4110027226823045,1.513229979908261,Hotspot (Oversampled),Brazil,Paraná,Porto Rico
+BRA.17.176_2,218,0.5652568597301358,2.145858499085461,Hotspot (Oversampled),Brazil,Pernambuco,Triunfo
+BRA.19.83_2,223,2.4456145837038985,1.8129813214066666,Hotspot (Oversampled),Brazil,Rio de Janeiro,Silva Jardim
+BRA.19.86_2,175,5.006378201493413,1.4668999930230546,Hotspot (Oversampled),Brazil,Rio de Janeiro,Teresópolis
+BRA.24.133_2,1545,0.6572535549521067,2.969820530292541,Hotspot (Oversampled),Brazil,Santa Catarina,Jaborá
+BRA.25.125_2,50,0.7526908343945642,1.463864860550582,Hotspot (Oversampled),Brazil,São Paulo,Cássia dos Coqueiros
+BRA.25.173_2,412,2.061888293247273,2.1299607093540054,Hotspot (Oversampled),Brazil,São Paulo,Espírito Santo do Pinhal
+BRA.25.213_2,195,1.6243827807640208,1.873228891777273,Hotspot (Oversampled),Brazil,São Paulo,Guariba
+BRA.25.420_2,145,2.0256440225508956,1.683535025334555,Hotspot (Oversampled),Brazil,São Paulo,Pedreira
+BRA.25.609_2,82,1.6674050173504573,1.4929891286375796,Hotspot (Oversampled),Brazil,São Paulo,Teodoro Sampaio
+BRA.25.620_2,124,0.7177169024399251,1.8619584238499416,Hotspot (Oversampled),Brazil,São Paulo,Tupi Paulista
+CAF.1.2_1,0,745.2737684472442,-2.8728981764203017,Coldspot (Undersampled),Central African Republic,Bamingui-Bangoran,Ndélé
+CAF.2.1_1,329,6.678870134537665,1.6332166170383138,Hotspot (Oversampled),Central African Republic,Bangui,Bangui
+CAF.5.3_1,0,542.6025535017623,-2.7352814881066676,Coldspot (Undersampled),Central African Republic,Haute-Kotto,Yalinga
+CAF.17.1_1,0,852.4621429841042,-2.931184261879882,Coldspot (Undersampled),Central African Republic,Vakaga,Birao
+CAN.2.14_1,725,23.669019306162422,1.4687847358389676,Hotspot (Oversampled),Canada,British Columbia,Greater Vancouver
+CAN.3.6_1,244,4.594126874776714,1.6414337724200916,Hotspot (Oversampled),Canada,Manitoba,Division No. 15
+CHL.2.1_1,0,1087.4474697388537,-3.0368074741184534,Coldspot (Undersampled),Chile,Antofagasta,Antofagasta
+CHL.2.2_1,0,591.2070538275957,-2.772473576001873,Coldspot (Undersampled),Chile,Antofagasta,El Loa
+CHL.5.2_1,0,466.8809898029865,-2.6701353999872572,Coldspot (Undersampled),Chile,Atacama,Copiapó
+CHL.15.1_1,0,704.2347997559826,-2.8483337343832478,Coldspot (Undersampled),Chile,Tarapacá,NA
+CHN.1.1_1,0,494.0045292184188,-2.69460917268219,Coldspot (Undersampled),China,Anhui,Anqing
+CHN.1.6_1,0,626.5932469990712,-2.797678261863882,Coldspot (Undersampled),China,Anhui,Chuzhou
+CHN.1.7_1,0,727.0122513629835,-2.862138687904479,Coldspot (Undersampled),China,Anhui,Fuyang
+CHN.1.8_1,0,1313.9217378715073,-3.118899905052387,Coldspot (Undersampled),China,Anhui,Hefei
+CHN.1.12_1,0,481.2969134256884,-2.683314482559492,Coldspot (Undersampled),China,Anhui,Lu'an
+CHN.4.1_1,0,955.2631288821772,-2.980577410788541,Coldspot (Undersampled),China,Fujian,Fuzhou
+CHN.4.6_1,0,628.5445560624565,-2.799026472755683,Coldspot (Undersampled),China,Fujian,Quanzhou
+CHN.4.9_1,0,611.1913008139696,-2.7868871540177147,Coldspot (Undersampled),China,Fujian,Zhangzhou
+CHN.5.6_1,0,773.5426774954841,-2.8890453524892212,Coldspot (Undersampled),China,Gansu,Jiuquan
+CHN.6.3_1,0,1030.3220633535184,-3.0133943088290893,Coldspot (Undersampled),China,Guangdong,Foshan
+CHN.6.6_1,0,962.7292874744504,-2.983955057277207,Coldspot (Undersampled),China,Guangdong,Huizhou
+CHN.6.7_1,0,579.5264014155472,-2.7638219755446274,Coldspot (Undersampled),China,Guangdong,Jiangmen
+CHN.6.12_1,0,590.5914433548222,-2.772021883832869,Coldspot (Undersampled),China,Guangdong,Shantou
+CHN.6.18_1,0,891.5026713754372,-2.9506095246854915,Coldspot (Undersampled),China,Guangdong,Zhanjiang
+CHN.6.20_1,0,644.4250220245389,-2.8098457982487575,Coldspot (Undersampled),China,Guangdong,Zhongshan
+CHN.7.11_1,0,642.7541028408983,-2.808720009949029,Coldspot (Undersampled),China,Guangxi,Nanning
+CHN.10.6_1,0,651.8719318781475,-2.8148279979160495,Coldspot (Undersampled),China,Hebei,Langfang
+CHN.10.10_1,0,478.6437342924041,-2.680918775544223,Coldspot (Undersampled),China,Hebei,Xingtai
+CHN.10.11_1,0,627.2705622076236,-2.7981467112036067,Coldspot (Undersampled),China,Hebei,Zhangjiakou
+CHN.11.1_1,0,474.72668788416996,-2.677357515674088,Coldspot (Undersampled),China,Heilongjiang,Daqing
+CHN.11.9_1,0,482.25906506223043,-2.6841800093525925,Coldspot (Undersampled),China,Heilongjiang,Qiqihar
+CHN.12.8_1,0,623.1988578496105,-2.7953229696640376,Coldspot (Undersampled),China,Henan,Nanyang
+CHN.12.12_1,0,862.3201403323459,-2.936171872653511,Coldspot (Undersampled),China,Henan,Shangqiu
+CHN.12.13_1,0,551.7579025555964,-2.742534960227242,Coldspot (Undersampled),China,Henan,Xinxiang
+CHN.12.14_1,0,477.7524351276115,-2.6801109959788616,Coldspot (Undersampled),China,Henan,Xinyang
+CHN.12.16_1,0,943.2732663547351,-2.975097694399738,Coldspot (Undersampled),China,Henan,Zhengzhou
+CHN.12.17_1,0,769.5843590622661,-2.886820189673235,Coldspot (Undersampled),China,Henan,Zhoukou
+CHN.12.18_1,0,554.7848453126634,-2.744906700615489,Coldspot (Undersampled),China,Henan,Zhumadian
+CHN.13.6_1,0,471.8759536619938,-2.674747230155358,Coldspot (Undersampled),China,Hubei,Jingzhou
+CHN.14.4_1,0,464.64547154458813,-2.6680553837480216,Coldspot (Undersampled),China,Hunan,Hengyang
+CHN.15.1_1,0,752.3342140290692,-2.8769876921459794,Coldspot (Undersampled),China,Jiangsu,Changzhou
+CHN.15.2_1,0,713.5739239625158,-2.854047163999341,Coldspot (Undersampled),China,Jiangsu,Huai'an
+CHN.15.3_1,0,709.4682957671121,-2.8515447025581997,Coldspot (Undersampled),China,Jiangsu,Lianyungang
+CHN.15.4_1,0,1208.0571377690362,-3.082446825287112,Coldspot (Undersampled),China,Jiangsu,Nanjing
+CHN.15.5_1,0,1500.6827078703875,-3.176578179820092,Coldspot (Undersampled),China,Jiangsu,Nantong
+CHN.15.7_1,0,2311.856287264126,-3.3641486480809473,Coldspot (Undersampled),China,Jiangsu,Suzhou
+CHN.15.8_1,0,1016.2291513681782,-3.0074187975289672,Coldspot (Undersampled),China,Jiangsu,Taizhou
+CHN.15.9_1,0,1144.8967310911619,-3.0591454805125973,Coldspot (Undersampled),China,Jiangsu,Wuxi
+CHN.15.10_1,0,876.1161658892654,-2.9430571154455336,Coldspot (Undersampled),China,Jiangsu,Xuzhou
+CHN.15.11_1,0,996.0513664392815,-2.998717533022273,Coldspot (Undersampled),China,Jiangsu,Yancheng
+CHN.15.12_1,0,630.999174216435,-2.8007165108243472,Coldspot (Undersampled),China,Jiangsu,Yangzhou
+CHN.15.13_1,0,732.5700216801047,-2.8654415749998443,Coldspot (Undersampled),China,Jiangsu,Zhenjiang
+CHN.16.2_1,0,894.7412102648339,-2.9521825552113445,Coldspot (Undersampled),China,Jiangxi,Ganzhou
+CHN.16.5_1,0,473.08916165935074,-2.675860026853778,Coldspot (Undersampled),China,Jiangxi,Jiujiang
+CHN.16.8_1,0,531.5260558135026,-2.726340862099855,Coldspot (Undersampled),China,Jiangxi,Shangrao
+CHN.17.3_1,0,853.9647101739627,-2.9319481890053476,Coldspot (Undersampled),China,Jilin,Changchun
+CHN.18.4_1,0,743.4547474493542,-2.871838303793583,Coldspot (Undersampled),China,Liaoning,Dalian
+CHN.18.12_1,0,1335.3345044009684,-3.1259151821155355,Coldspot (Undersampled),China,Liaoning,Shenyang
+CHN.19.4_1,0,984.2517340682944,-2.9935472079077283,Coldspot (Undersampled),China,Nei Mongol,Chifeng
+CHN.19.7_1,0,1051.5541962594161,-3.0222444670069244,Coldspot (Undersampled),China,Nei Mongol,Ordos
+CHN.19.8_1,0,612.536930490005,-2.7878407092395614,Coldspot (Undersampled),China,Nei Mongol,Tongliao
+CHN.19.9_1,0,474.01585818757263,-2.676708108589904,Coldspot (Undersampled),China,Nei Mongol,Ulaan Chab
+CHN.19.11_1,0,1259.8120304473714,-3.100650344127064,Coldspot (Undersampled),China,Nei Mongol,Xilin Gol
+CHN.19.12_1,0,469.4315549385784,-2.6724964450325333,Coldspot (Undersampled),China,Nei Mongol,Xing'an
+CHN.21.1_1,0,586.1444688453834,-2.768744973995114,Coldspot (Undersampled),China,Qinghai,Golog Tibetan
+CHN.21.2_1,0,1247.0737445611396,-3.096240247133083,Coldspot (Undersampled),China,Qinghai,Gyêgu Tibetan
+CHN.21.6_1,0,1404.1027835771918,-3.1477080941398268,Coldspot (Undersampled),China,Qinghai,Haixi Mongol and Tibetan
+CHN.22.5_1,6443,41.95754740704975,2.1761160537016435,Hotspot (Oversampled),China,Shaanxi,Tongchuan
+CHN.22.7_1,11558,419.5232222164008,1.4391302802408972,Hotspot (Oversampled),China,Shaanxi,Xi'an
+CHN.22.9_1,0,508.9781227844542,-2.7075515459846424,Coldspot (Undersampled),China,Shaanxi,Yan'an
+CHN.22.10_1,0,815.2920627633507,-2.911845573646502,Coldspot (Undersampled),China,Shaanxi,Yulin
+CHN.23.2_1,0,467.1583209658201,-2.6703927468653577,Coldspot (Undersampled),China,Shandong,Dezhou
+CHN.23.4_1,0,607.2199458691066,-2.784060658226482,Coldspot (Undersampled),China,Shandong,Heze
+CHN.23.5_1,0,662.6406193173647,-2.821932959940497,Coldspot (Undersampled),China,Shandong,Jinan
+CHN.23.8_1,0,655.5905586463175,-2.8172946335604157,Coldspot (Undersampled),China,Shandong,Liaocheng
+CHN.24.1_1,0,4685.865159063053,-3.670882459063791,Coldspot (Undersampled),China,Shanghai,Shanghai
+CHN.25.8_1,0,477.727052181605,-2.6800879695359274,Coldspot (Undersampled),China,Shanxi,Taiyuan
+CHN.25.9_1,0,465.3320240751335,-2.6686952404632094,Coldspot (Undersampled),China,Shanxi,Xinzhou
+CHN.26.2_1,0,596.9075981890506,-2.776634072454453,Coldspot (Undersampled),China,Sichuan,Chengdu
+CHN.26.5_1,0,1134.9507936357584,-3.0553595193016685,Coldspot (Undersampled),China,Sichuan,Garzê Tibetan
+CHN.26.9_1,0,481.787945309823,-2.6837564176995783,Coldspot (Undersampled),China,Sichuan,Liangshan Yi
+CHN.26.16_1,0,623.5351125867702,-2.795556860282615,Coldspot (Undersampled),China,Sichuan,Ngawa Tibetan and Qiang
+CHN.27.1_1,0,2381.566454763367,-3.3770450228610573,Coldspot (Undersampled),China,Tianjin,Tianjin
+CHN.28.1_1,0,871.3930301174819,-2.9407121871753366,Coldspot (Undersampled),China,Xinjiang Uygur,Aksu
+CHN.28.2_1,0,648.3274088797202,-2.8124637353446227,Coldspot (Undersampled),China,Xinjiang Uygur,Altay
+CHN.28.3_1,0,1727.1991689586953,-3.2375937919595645,Coldspot (Undersampled),China,Xinjiang Uygur,Bayin'gholin Mongol
+CHN.28.6_1,0,636.1016203852182,-2.8042087096550503,Coldspot (Undersampled),China,Xinjiang Uygur,Hami
+CHN.28.9_1,0,713.760563521721,-2.8541605825613896,Coldspot (Undersampled),China,Xinjiang Uygur,Kashgar
+CHN.28.10_1,0,1105.9049313808857,-3.0441103222791996,Coldspot (Undersampled),China,Xinjiang Uygur,Khotan
+CHN.29.1_1,0,983.1670961103409,-2.993068841071371,Coldspot (Undersampled),China,Xizang,Chamdo
+CHN.29.3_1,0,1934.9997048755552,-3.2869052867683832,Coldspot (Undersampled),China,Xizang,Nagchu
+CHN.29.4_1,0,1420.9093869654114,-3.1528719212919287,Coldspot (Undersampled),China,Xizang,Ngari
+CHN.30.12_1,0,489.26362886578096,-2.690429675483997,Coldspot (Undersampled),China,Yunnan,Qujing
+CHN.31.2_1,0,616.4750876411005,-2.790619440444653,Coldspot (Undersampled),China,Zhejiang,Huzhou
+CHN.31.3_1,0,1009.357494512363,-3.0044750672711187,Coldspot (Undersampled),China,Zhejiang,Jiaxing
+CHN.31.4_1,0,837.8655268392492,-2.9236923474408942,Coldspot (Undersampled),China,Zhejiang,Jinhua
+CIV.1.1_1,0,472.18140554139546,-2.675027669959626,Coldspot (Undersampled),Côte d'Ivoire,Abidjan,Abidjan
+COL.2.75_2,249,1.701676175215568,1.966306715705111,Hotspot (Oversampled),Colombia,Antioquia,Necoclí
+COL.14.14_2,362,10.375385214214216,1.5039405125794985,Hotspot (Oversampled),Colombia,Córdoba,Montería
+COL.29.2_2,210,1.5049912411202686,1.9254762436332646,Hotspot (Oversampled),Colombia,Sucre,Caimito
+COL.29.19_2,288,1.3087402737286535,2.097522763902131,Hotspot (Oversampled),Colombia,Sucre,San Marcos
+COL.29.23_2,126,1.9904892635135951,1.6280614734137064,Hotspot (Oversampled),Colombia,Sucre,Sincelejo
+CZE.2.3_1,1566,34.70205566639252,1.6423757736654043,Hotspot (Oversampled),Czechia,Jihomoravský,Brno
+DEU.16.6_1,873,18.482465832187394,1.6518675093762298,Hotspot (Oversampled),Germany,Thüringen,Gotha
+EGY.1.1_1,0,839.088224248323,-2.924324897124085,Coldspot (Undersampled),Egypt,Ad Daqahliyah,Aja
+EGY.1.3_1,0,1016.4910694603823,-3.0075306061025677,Coldspot (Undersampled),Egypt,Ad Daqahliyah,Al-Mansurah
+EGY.1.8_1,0,644.1106438390425,-2.809634207484544,Coldspot (Undersampled),Egypt,Ad Daqahliyah,As-Sinbillawayn
+EGY.1.10_1,0,850.6744331767993,-2.930273610146899,Coldspot (Undersampled),Egypt,Ad Daqahliyah,Bilqas
+EGY.1.15_1,0,1122.3324653107686,-3.0505083105633477,Coldspot (Undersampled),Egypt,Ad Daqahliyah,Mit Ghamr
+EGY.1.18_1,0,619.0785432153298,-2.79244670357013,Coldspot (Undersampled),Egypt,Ad Daqahliyah,Shirbin
+EGY.2.3_1,0,655.2825683709153,-2.8170908690430556,Coldspot (Undersampled),Egypt,Al Bahr al Ahmar,Al-Qusayr
+EGY.2.4_1,0,1324.8701411642141,-3.122500990330033,Coldspot (Undersampled),Egypt,Al Bahr al Ahmar,Ash-Shalatin
+EGY.2.5_1,0,948.5420709967201,-2.977514211618534,Coldspot (Undersampled),Egypt,Al Bahr al Ahmar,Marsa 'Alam
+EGY.3.1_1,0,1176.1176471564645,-3.0708198706238132,Coldspot (Undersampled),Egypt,Al Buhayrah,Abu al-Matamir
+EGY.3.2_1,0,738.2208654750542,-2.8687742169144137,Coldspot (Undersampled),Egypt,Al Buhayrah,Abu Hummus
+EGY.3.3_1,0,776.401013667541,-2.8906451025802133,Coldspot (Undersampled),Egypt,Al Buhayrah,Ad-Dilinat
+EGY.3.6_1,0,701.3045452031453,-2.846525479110089,Coldspot (Undersampled),Egypt,Al Buhayrah,Badr
+EGY.3.7_1,0,571.6195286731102,-2.7578661551601646,Coldspot (Undersampled),Egypt,Al Buhayrah,Damanhur
+EGY.3.10_1,0,568.6774108083314,-2.755628998891834,Coldspot (Undersampled),Egypt,Al Buhayrah,Ityay al-Barud
+EGY.3.11_1,0,2112.421270352371,-3.32498607403001,Coldspot (Undersampled),Egypt,Al Buhayrah,Kafr ad-Dawwar
+EGY.3.12_1,0,561.1416240972306,-2.7498457440662163,Coldspot (Undersampled),Egypt,Al Buhayrah,Kawm Hamadah
+EGY.3.15_1,0,1017.5913463636412,-3.007999982224527,Coldspot (Undersampled),Egypt,Al Buhayrah,Unorganized in Al Buhayrah
+EGY.4.1_1,0,1224.8853164141224,-3.0884498431202623,Coldspot (Undersampled),Egypt,Al Fayyum,Al-Fayyum
+EGY.4.5_1,0,518.8179280428978,-2.7158512538410875,Coldspot (Undersampled),Egypt,Al Fayyum,Sinnuris
+EGY.4.6_1,0,499.10904480969447,-2.699064709127589,Coldspot (Undersampled),Egypt,Al Fayyum,Tamiyah
+EGY.4.7_1,0,822.9375037340876,-2.9158942713903664,Coldspot (Undersampled),Egypt,Al Fayyum,Unorganized in Al Fayoum
+EGY.5.1_1,0,773.5463865122108,-2.8890474321701576,Coldspot (Undersampled),Egypt,Al Gharbiyah,Al-Mahallah al-Kubra
+EGY.5.4_1,0,856.9948235526858,-2.9334846676747124,Coldspot (Undersampled),Egypt,Al Gharbiyah,As-Santah
+EGY.5.6_1,0,501.65579114456364,-2.7012706904672776,Coldspot (Undersampled),Egypt,Al Gharbiyah,Kafr az-Zayyat
+EGY.5.8_1,0,490.054828657292,-2.6911299859191233,Coldspot (Undersampled),Egypt,Al Gharbiyah,Samannud
+EGY.5.9_1,0,816.3318681775141,-2.912398432607558,Coldspot (Undersampled),Egypt,Al Gharbiyah,Tanta
+EGY.5.12_1,0,881.6033857849935,-2.945765589126265,Coldspot (Undersampled),Egypt,Al Gharbiyah,Zifta
+EGY.6.2_1,0,3071.625041518016,-3.487509565679335,Coldspot (Undersampled),Egypt,Al Iskandariyah,Al-'Amriyah
+EGY.6.6_1,861,2.7001706625939392,2.3672855103756842,Hotspot (Oversampled),Egypt,Al Iskandariyah,Al-Manshiyah
+EGY.7.2_1,0,673.79495782774,-2.8291718288136933,Coldspot (Undersampled),Egypt,Al Isma`iliyah,Al-Qantarah ash-Sharqiyah
+EGY.7.3_1,0,933.8101854533156,-2.9707234357078574,Coldspot (Undersampled),Egypt,Al Isma`iliyah,At-Tall al-Kabir
+EGY.7.5_1,0,604.4824431546529,-2.7821015546605747,Coldspot (Undersampled),Egypt,Al Isma`iliyah,Ismailia
+EGY.8.6_1,0,871.1561124334925,-2.940594228854823,Coldspot (Undersampled),Egypt,Al Jizah,Al-Badrashayn
+EGY.8.9_1,0,892.3558833089934,-2.9510245018535977,Coldspot (Undersampled),Egypt,Al Jizah,Al-Warraq
+EGY.8.13_1,0,922.0472633347787,-2.9652239390323847,Coldspot (Undersampled),Egypt,Al Jizah,Giza
+EGY.8.14_1,0,1136.5551356591623,-3.055972455467373,Coldspot (Undersampled),Egypt,Al Jizah,Imbabah
+EGY.8.15_1,0,725.1183438233827,-2.861007408414876,Coldspot (Undersampled),Egypt,Al Jizah,Kirdasah
+EGY.8.19_1,0,5382.71300456994,-3.731081900425853,Coldspot (Undersampled),Egypt,Al Jizah,Unorganized in Al Jizah
+EGY.9.1_1,0,860.5855717037944,-2.9352984175625667,Coldspot (Undersampled),Egypt,Al Minufiyah,Al-Bajur
+EGY.9.3_1,0,1336.1912858026244,-3.1261935377229793,Coldspot (Undersampled),Egypt,Al Minufiyah,Ashmun
+EGY.9.4_1,0,583.5112291125495,-2.766792858859318,Coldspot (Undersampled),Egypt,Al Minufiyah,Birkat as-Sab'
+EGY.9.7_1,0,1272.5130143249464,-3.1050033874783773,Coldspot (Undersampled),Egypt,Al Minufiyah,Quwaysina
+EGY.9.9_1,0,579.9844865969965,-2.7641645360473537,Coldspot (Undersampled),Egypt,Al Minufiyah,Shibin al-Kawm
+EGY.9.11_1,0,549.7077983486838,-2.7409212263919813,Coldspot (Undersampled),Egypt,Al Minufiyah,Tala
+EGY.10.7_1,0,604.7282829958025,-2.7822778524518745,Coldspot (Undersampled),Egypt,Al Minya,Maghaghah
+EGY.10.12_1,0,698.3639957748334,-2.8447032704685062,Coldspot (Undersampled),Egypt,Al Minya,Samalut
+EGY.10.13_1,0,2791.2174087667704,-3.4459492304811263,Coldspot (Undersampled),Egypt,Al Minya,Unorganized in Al Minya
+EGY.11.8_1,0,485.116053049207,-2.6867399630526796,Coldspot (Undersampled),Egypt,Al Qahirah,Al-Khalifa
+EGY.11.14_1,0,636.322205546442,-2.8043590504087565,Coldspot (Undersampled),Egypt,Al Qahirah,An-Nuzhah
+EGY.11.20_1,0,912.9171003922327,-2.9609068035292045,Coldspot (Undersampled),Egypt,Al Qahirah,Ash-Shruq
+EGY.11.31_1,0,726.6185441205214,-2.8619037589821357,Coldspot (Undersampled),Egypt,Al Qahirah,Nasr City 1
+EGY.11.34_1,0,539.5009067296106,-2.7327964268505434,Coldspot (Undersampled),Egypt,Al Qahirah,New Cairo 2
+EGY.11.40_1,0,1448.9944119180607,-3.1613663285261286,Coldspot (Undersampled),Egypt,Al Qahirah,Unorganized in Al Qahirah
+EGY.12.2_1,0,1988.8921708889666,-3.2988295433158883,Coldspot (Undersampled),Egypt,Al Qalyubiyah,Al-Khankah
+EGY.12.4_1,0,941.6810502106109,-2.9743647769746215,Coldspot (Undersampled),Egypt,Al Qalyubiyah,Al-Qanatir al-Khayriyah
+EGY.12.5_1,0,993.8306511917551,-2.9977491576175725,Coldspot (Undersampled),Egypt,Al Qalyubiyah,Banha
+EGY.12.8_1,0,1453.1616854669956,-3.162612697583687,Coldspot (Undersampled),Egypt,Al Qalyubiyah,Qalyub
+EGY.12.9_1,0,913.3789913802744,-2.9611262392240216,Coldspot (Undersampled),Egypt,Al Qalyubiyah,Shibin al-Qanatir
+EGY.12.12_1,0,1152.8405396471614,-3.06214579362348,Coldspot (Undersampled),Egypt,Al Qalyubiyah,Tukh
+EGY.12.13_1,0,876.3826035401252,-2.9431890191030856,Coldspot (Undersampled),Egypt,Al Qalyubiyah,Unorganized in Al Qalyubiyah
+EGY.14.1_1,0,5776.169632028975,-3.76171511969176,Coldspot (Undersampled),Egypt,Al Wadi al Jadid,Al-Wahat al-Kharijah
+EGY.14.2_1,0,1301.2082732439508,-3.114680450197471,Coldspot (Undersampled),Egypt,Al Wadi al Jadid,Baris Shurtah
+EGY.14.3_1,0,7527.525936730605,-3.876709950940113,Coldspot (Undersampled),Egypt,Al Wadi al Jadid,Shurtah al-Dakhlah
+EGY.14.4_1,0,1461.7233244815118,-3.1651621866760267,Coldspot (Undersampled),Egypt,Al Wadi al Jadid,Shurtah al-Farafirah
+EGY.15.1_1,0,628.391542979799,-2.7989209030800897,Coldspot (Undersampled),Egypt,As Suways,'Ataqah
+EGY.15.3_1,0,567.7884708937819,-2.7549507848420394,Coldspot (Undersampled),Egypt,As Suways,Al-Janayin
+EGY.16.3_1,0,908.2084399382296,-2.9586634585109053,Coldspot (Undersampled),Egypt,Ash Sharqiyah,Abu Hammad
+EGY.16.4_1,0,684.9818988976934,-2.8363126560674448,Coldspot (Undersampled),Egypt,Ash Sharqiyah,Abu Kabir
+EGY.16.5_1,0,943.4228474763855,-2.975166484985359,Coldspot (Undersampled),Egypt,Ash Sharqiyah,Al-Husayniyah
+EGY.16.10_1,0,817.0485608607514,-2.9127790849523576,Coldspot (Undersampled),Egypt,Ash Sharqiyah,Bilbays
+EGY.16.11_1,0,852.2025439618297,-2.9310521416987902,Coldspot (Undersampled),Egypt,Ash Sharqiyah,Diyarb Najm
+EGY.16.12_1,0,619.6506981215313,-2.792847248230306,Coldspot (Undersampled),Egypt,Ash Sharqiyah,Faqus
+EGY.16.15_1,0,465.1438595405875,-2.668519967683316,Coldspot (Undersampled),Egypt,Ash Sharqiyah,Mashtul as-Suq
+EGY.16.16_1,0,1583.1349959021925,-3.1997921882871037,Coldspot (Undersampled),Egypt,Ash Sharqiyah,Minya al-Qamh
+EGY.16.17_1,0,833.0439414165131,-2.9211889319470967,Coldspot (Undersampled),Egypt,Ash Sharqiyah,New Salhiyah
+EGY.16.18_1,0,1736.379069229114,-3.2398945851215672,Coldspot (Undersampled),Egypt,Ash Sharqiyah,Unorganized in Ash Sharqiyah
+EGY.16.19_1,0,1264.4219659768412,-3.1022353689406845,Coldspot (Undersampled),Egypt,Ash Sharqiyah,Zaqaziq
+EGY.17.9_1,0,3941.6613995861126,-3.595789480952084,Coldspot (Undersampled),Egypt,Aswan,Unorganized in Aswan
+EGY.18.7_1,0,522.3958691668388,-2.7188302907052244,Coldspot (Undersampled),Egypt,Asyut,Asyut
+EGY.18.15_1,0,2580.039881217994,-3.41179471514406,Coldspot (Undersampled),Egypt,Asyut,Unorganized in Asyut
+EGY.19.3_1,0,537.7851462479867,-2.7314156141640575,Coldspot (Undersampled),Egypt,Bani Suwayf,Bani Suwayf
+EGY.19.9_1,0,1283.669273510909,-3.1087913368687814,Coldspot (Undersampled),Egypt,Bani Suwayf,Unorganized in Bani Suwayf
+EGY.21.1_1,0,891.7560432206808,-2.9507327986895313,Coldspot (Undersampled),Egypt,Dumyat,Damietta
+EGY.22.6_1,0,479.3873177336871,-2.6815915334707086,Coldspot (Undersampled),Egypt,Janub Sina',Ras Sidr
+EGY.22.8_1,0,496.8032611259532,-2.697057737359692,Coldspot (Undersampled),Egypt,Janub Sina',Sharm el-Sheikh
+EGY.23.5_1,0,555.288733484047,-2.7453002642635727,Coldspot (Undersampled),Egypt,Kafr ash Shaykh,Disuq
+EGY.23.7_1,0,656.2564310692346,-2.817734844248491,Coldspot (Undersampled),Egypt,Kafr ash Shaykh,Kafr ash-Shaykh
+EGY.23.8_1,0,572.55412039179555,-2.7585744040656324,Coldspot (Undersampled),Egypt,Kafr ash Shaykh,Mutubis
+EGY.24.1_1,0,1293.4431407470292,-3.112082978523579,Coldspot (Undersampled),Egypt,Matrouh,Ad-Dab'ah
+EGY.24.2_1,0,1716.1906055424497,-3.2348185038627033,Coldspot (Undersampled),Egypt,Matrouh,Al-Hammam
+EGY.24.3_1,0,532.6258518986428,-2.727236861135188,Coldspot (Undersampled),Egypt,Matrouh,As-Salum
+EGY.24.4_1,0,549.8295480827992,-2.741017229016107,Coldspot (Undersampled),Egypt,Matrouh,Marina al-'Alamayn as-Siyahiyah
+EGY.24.5_1,0,2619.9328304230157,-3.4184558909388034,Coldspot (Undersampled),Egypt,Matrouh,Marsa Matruh
+EGY.24.6_1,0,914.9572789626758,-2.9618752182710817,Coldspot (Undersampled),Egypt,Matrouh,Sidi Barrani
+EGY.24.7_1,0,1394.7884249839767,-3.144819592480773,Coldspot (Undersampled),Egypt,Matrouh,Siwa
+EGY.25.13_1,0,1839.627045876946,-3.264965799190496,Coldspot (Undersampled),Egypt,Qina,Unorganized in Qina
+EGY.26.6_1,0,479.3166915243079,-2.6815276791039717,Coldspot (Undersampled),Egypt,Shamal Sina',Bir al-'Abd
+EGY.27.18_1,0,1327.4164823403062,-3.1233342554727463,Coldspot (Undersampled),Egypt,Suhaj,Unorganized in Suhaj
+ESP.6.1_1,0,571.7844976948614,-2.757991255360055,Coldspot (Undersampled),Spain,Cataluña,Barcelona
+EST.12.4_1,59,0.4522001828572514,1.616124763277237,Hotspot (Oversampled),Estonia,Saare,Kuressaare
+FIN.5.3_1,0,906.9897099871515,-2.958080926801789,Coldspot (Undersampled),Finland,Western Finland,Finland Proper
+FIN.5.6_1,1,1040.9023102979033,-2.7167970053653097,Coldspot (Undersampled),Finland,Western Finland,Pirkanmaa
+FRA.6.1_1,4361,169.23579579949276,1.4086347759779798,Hotspot (Oversampled),France,Grand Est,Ardennes
+FRA.7.2_1,0,730.079246556873,-2.8639644555857453,Coldspot (Undersampled),France,Hauts-de-France,Nord
+FRA.7.4_1,0,507.68443932208396,-2.7064484527484867,Coldspot (Undersampled),France,Hauts-de-France,Pas-de-Calais
+FRA.8.1_1,0,500.2452580136552,-2.700050277043213,Coldspot (Undersampled),France,Île-de-France,Essonne
+FRA.8.4_1,0,549.5584386921953,-2.740803423679344,Coldspot (Undersampled),France,Île-de-France,Seine-et-Marne
+FRA.8.5_1,0,617.6241556983283,-2.7914268740921044,Coldspot (Undersampled),France,Île-de-France,Seine-Saint-Denis
+FRA.8.8_1,0,941.0669196245066,-2.974081753951468,Coldspot (Undersampled),France,Île-de-France,Yvelines
+FRA.10.7_1,0,566.0689568979077,-2.753635873318529,Coldspot (Undersampled),France,Nouvelle-Aquitaine,Gironde
+FRA.12.1_1,0,481.61876372932875,-2.683604202831145,Coldspot (Undersampled),France,Pays de la Loire,Loire-Atlantique
+FRA.13.3_1,0,805.1302782527205,-2.906405233559634,Coldspot (Undersampled),France,Provence-Alpes-Côte d'Azur,Bouches-du-Rhône
+GBR.1.36_1,0,477.335802894869,-2.6797328885402703,Coldspot (Undersampled),United Kingdom,England,NA
+GIN.1.2_1,0,490.2913559598049,-2.6913391229950228,Coldspot (Undersampled),Guinea,Boké,Boké
+GIN.4.3_1,0,574.3233378283356,-2.7599119914155414,Coldspot (Undersampled),Guinea,Kankan,Kouroussa
+GIN.4.4_1,0,485.9301367889528,-2.687466654472186,Coldspot (Undersampled),Guinea,Kankan,Mandiana
+GIN.8.1_1,0,519.9462648772335,-2.716792928537819,Coldspot (Undersampled),Guinea,Nzérékoré,Beyla
+GRC.3.1_1,0,734.9969088092851,-2.866875990302323,Coldspot (Undersampled),Greece,Attica,Attica
+GRC.7.2_1,0,592.0479198179944,-2.773089786908448,Coldspot (Undersampled),Greece,"Peloponnese, Western Greece and",Peloponnese
+GRC.8.1_1,0,489.4771868644698,-2.6906188122271106,Coldspot (Undersampled),Greece,Thessaly and Central Greece,Central Greece
+GRC.8.2_1,0,599.5245949833741,-2.7785307989942534,Coldspot (Undersampled),Greece,Thessaly and Central Greece,Thessaly
+HND.15.2_1,65,1.413339556698779,1.436925504132152,Hotspot (Oversampled),Honduras,Olancho,Catacamas
+HRV.4.3_1,141,1.9292321826958219,1.6855345474139316,Hotspot (Oversampled),Croatia,Grad Zagreb,Orle
+HRV.9.9_1,310,3.155196738523172,1.8741687976257901,Hotspot (Oversampled),Croatia,Licko-Senjska,Plitvička Jezera
+HRV.13.4_1,94,1.320635095108836,1.6121167494687239,Hotspot (Oversampled),Croatia,Primorsko-Goranska,Čabar
+HRV.21.15_1,80,1.2309618178962423,1.5599928813240225,Hotspot (Oversampled),Croatia,Zagrebačka,Križ
+HUN.2.1_1,5471,42.1564620270667,2.103100254765656,Hotspot (Oversampled),Hungary,Baranya,Komlói
+HUN.5.1_1,0,866.8167158141162,-2.938428011218307,Coldspot (Undersampled),Hungary,Budapest,Budapesti
+IDN.4.8_1,0,1351.483072726618,-3.131131838312857,Coldspot (Undersampled),Indonesia,Banten,Tangerang
+IDN.7.6_1,229,0.5685457689460874,2.1662306404235965,Hotspot (Oversampled),Indonesia,Jakarta Raya,Kepulauan Seribu
+IND.16.26_1,155,1.243601394472712,1.8421788970884676,Hotspot (Oversampled),India,Karnataka,Shimoga
+IND.26.20_1,64,1.0792788893536016,1.4950006123887438,Hotspot (Oversampled),India,Odisha,Koraput
+IND.29.24_1,55,1.142682962872862,1.417230110589046,Hotspot (Oversampled),India,Rajasthan,Kota
+IND.31.30_1,84,2.0257473053827733,1.4485862705203034,Hotspot (Oversampled),India,Tamil Nadu,Vellore
+ITA.8.4_1,0,679.0682373309128,-2.83255249154366,Coldspot (Undersampled),Italy,Lazio,Roma
+ITA.10.8_1,0,465.92985894284834,-2.6692516468146876,Coldspot (Undersampled),Italy,Lombardia,Milano
+ITA.17.2_1,9661,172.67195181250426,1.7453373480173888,Hotspot (Oversampled),Italy,Trentino-Alto Adige,Trento
+JPN.12.41_1,100,1.6034821336558425,1.5887667720979155,Hotspot (Oversampled),Japan,Hokkaido,Hokuto
+JPN.12.58_1,123,0.9767312819496228,1.7974740500915722,Hotspot (Oversampled),Japan,Hokkaido,Kikonai
+JPN.12.108_1,224,2.2055325573712423,1.8462823259058467,Hotspot (Oversampled),Japan,Hokkaido,Otaru
+JPN.12.157_1,379,1.0476117603823252,2.268535981377164,Hotspot (Oversampled),Japan,Hokkaido,Tōbetsu
+KAZ.1.3_1,204,7.010712013696866,1.4080827419906343,Hotspot (Oversampled),Kazakhstan,Almaty,Almaty (Alma-Ata)
+KHM.8.1_2,660,17.595165891483,1.5508014023386836,Hotspot (Oversampled),Cambodia,Kândal,Angk Snuol
+KHM.14.5_2,252,8.412994947062755,1.4293926956189233,Hotspot (Oversampled),Cambodia,Môndól Kiri,Saen Monourom
+KOR.7.5_2,615,17.665762168210115,1.5185349842460634,Hotspot (Oversampled),South Korea,Gwangju,Seo
+KOR.8.8_2,0,702.4535931501957,-2.847235452298745,Coldspot (Undersampled),South Korea,Gyeonggi-do,Goyang
+KOR.8.14_2,0,590.9535063845485,-2.7722875974094445,Coldspot (Undersampled),South Korea,Gyeonggi-do,Hanam
+KOR.8.17_2,0,595.8927408262166,-2.775896297205818,Coldspot (Undersampled),South Korea,Gyeonggi-do,Namyangju
+KOR.8.30_2,1761,46.00308705269142,1.5738795217590014,Hotspot (Oversampled),South Korea,Gyeonggi-do,Yeoncheon
+KOR.8.31_2,0,635.0515450486807,-2.8034923119111923,Coldspot (Undersampled),South Korea,Gyeonggi-do,Yongin
+KOR.9.8_2,0,504.1994079690884,-2.7034628329444397,Coldspot (Undersampled),South Korea,Gyeongsangbuk-do,Gumi
+KOR.10.2_2,0,704.6425438232793,-2.8485847569178313,Coldspot (Undersampled),South Korea,Gyeongsangnam-do,Changwon
+KOR.10.18_2,0,598.5471684057997,-2.7778233561963797,Coldspot (Undersampled),South Korea,Gyeongsangnam-do,Yangsan
+KOR.13.5_2,0,513.911109245577,-2.7117322618641455,Coldspot (Undersampled),South Korea,Jeollabuk-do,Iksan
+KOR.16.25_2,4418,119.70042389508144,1.5636152062373427,Hotspot (Oversampled),South Korea,Seoul,Yongsan
+LAO.8.1_1,262,6.780576624679628,1.5289439644002403,Hotspot (Oversampled),Laos,Louangphrabang,Chomphet
+LKA.3.1_1,116,0.4178970113255116,1.9165411746490244,Hotspot (Oversampled),Sri Lanka,Badulla,Badulla
+LTU.3.3_1,184,6.063147366471501,1.418173460877922,Hotspot (Oversampled),Lithuania,Klaipedos,Neringos
+MEX.6.34_2,196,3.002773192390361,1.6921052436217983,Hotspot (Oversampled),México,Chihuahua,Janos
+MEX.8.7_2,600,4.523791677293213,2.036637180645754,Hotspot (Oversampled),México,Colima,Manzanillo
+MEX.12.18_2,131,2.5656070117720304,1.5684404560860803,Hotspot (Oversampled),México,Guerrero,Chilpancingo de los Bravo
+MEX.12.46_2,91,0.7362862176651316,1.7241665094390115,Hotspot (Oversampled),México,Guerrero,Leonardo Bravo
+MEX.12.47_2,78,0.7197164654530261,1.662170241847797,Hotspot (Oversampled),México,Guerrero,Malinaltepec
+MEX.13.4_2,47,0.20320689359547617,1.6009009258950586,Hotspot (Oversampled),México,Hidalgo,Agua Blanca de Iturbide
+MEX.17.9_2,62,1.306461029399129,1.4363944284064982,Hotspot (Oversampled),México,Morelos,Huitzilac
+MEX.17.20_2,153,0.8753314160482117,1.9144426917369546,Hotspot (Oversampled),México,Morelos,Tepalcingo
+MEX.24.7_2,126,1.13097626075059,1.775225109290769,Hotspot (Oversampled),México,San Luis Potosí,Catorce
+MEX.27.7_2,78,0.9053717890242854,1.6176473605347121,Hotspot (Oversampled),México,Tabasco,Emiliano Zapata
+MEX.28.12_2,248,1.0345723332226373,2.087726212571692,Hotspot (Oversampled),México,Tamaulipas,Gómez Farías
+MEX.30.134_2,167,1.3345729425152386,1.8571018339422383,Hotspot (Oversampled),México,Veracruz,Perote
+MLI.9.5_1,0,876.703193223125,-2.9433476783915227,Coldspot (Undersampled),Mali,Timbuktu,Tombouctou
+MNG.14.10_1,67,0.852077950607707,1.5648496513072099,Hotspot (Oversampled),Mongolia,Hövsgöl,Khankh
+MNG.15.5_1,127,3.6660327982307632,1.4382621824596213,Hotspot (Oversampled),Mongolia,Ömnögovi,Gurvan tes
+MOZ.2.10_1,534,17.487738869387403,1.4614699837120653,Hotspot (Oversampled),Mozambique,Gaza,Massingir
+NAM.1.1_1,0,1269.5850709182,-3.1040037481691343,Coldspot (Undersampled),Namibia,!Karas,Berseba
+NAM.1.2_1,0,1301.4113449607282,-3.11474817058596,Coldspot (Undersampled),Namibia,!Karas,Karas
+NAM.1.3_1,0,1504.9861127523095,-3.1778209670951942,Coldspot (Undersampled),Namibia,!Karas,Keetmanshoop Rural
+NAM.1.5_1,0,1143.1116357967733,-3.058468402468464,Coldspot (Undersampled),Namibia,!Karas,Luderitz
+NAM.2.1_1,0,561.2783041424199,-2.749951326310382,Coldspot (Undersampled),Namibia,Erongo,Arandis
+NAM.2.2_1,0,696.210927655874,-2.843364185356278,Coldspot (Undersampled),Namibia,Erongo,Daures
+NAM.2.3_1,0,676.8979165580366,-2.831164299156915,Coldspot (Undersampled),Namibia,Erongo,Karibib
+NAM.2.4_1,0,472.92645226299396,-2.6757109495756244,Coldspot (Undersampled),Namibia,Erongo,Omaruru
+NAM.2.6_1,0,490.85072537263983,-2.6918333162152415,Coldspot (Undersampled),Namibia,Erongo,Walvisbay Rural
+NAM.3.1_1,0,1381.5501409928884,-3.1406808908350716,Coldspot (Undersampled),Namibia,Hardap,Gibeon
+NAM.3.2_1,0,1658.9053193242692,-3.2200833166739655,Coldspot (Undersampled),Namibia,Hardap,Mariental Rural
+NAM.3.5_1,0,558.1218804374034,-2.747506488086412,Coldspot (Undersampled),Namibia,Hardap,Rehoboth Rural
+NAM.5.4_1,780,6.77497803758672,2.0019518629524917,Hotspot (Oversampled),Namibia,Khomas,Moses Garoeb
+NAM.5.9_1,0,2082.5148183977917,-3.318796593598435,Coldspot (Undersampled),Namibia,Khomas,Windhoek Rural
+NAM.6.1_1,0,733.2119951582087,-2.8658214754941254,Coldspot (Undersampled),Namibia,Kunene,Epupa
+NAM.6.2_1,0,758.0853719085273,-2.880290622356303,Coldspot (Undersampled),Namibia,Kunene,Kamanjab
+NAM.6.3_1,0,752.5291538068966,-2.877100059693155,Coldspot (Undersampled),Namibia,Kunene,Khorixas
+NAM.6.4_1,0,886.6224236929826,-2.948228265127248,Coldspot (Undersampled),Namibia,Kunene,Opuwo
+NAM.8.1_1,0,555.991172496798,-2.7458483122898705,Coldspot (Undersampled),Namibia,Omaheke,Aminius
+NAM.8.7_1,0,821.1180025934434,-2.9149341584124087,Coldspot (Undersampled),Namibia,Omaheke,Steinhausen
+NAM.11.2_1,0,616.7197806017198,-2.7907915085234314,Coldspot (Undersampled),Namibia,Oshikoto,Guinas
+NAM.12.1_1,0,648.2345849067314,-2.8124016467581416,Coldspot (Undersampled),Namibia,Otjozondjupa,Grootfontein
+NAM.12.3_1,0,629.7985721130839,-2.7998907015812304,Coldspot (Undersampled),Namibia,Otjozondjupa,Okakarara
+NAM.12.4_1,0,1528.1365297141688,-3.184446263341914,Coldspot (Undersampled),Namibia,Otjozondjupa,Omatako
+NAM.12.5_1,0,722.4146010298892,-2.859387270091508,Coldspot (Undersampled),Namibia,Otjozondjupa,Otavi
+NAM.12.7_1,0,808.2072970729356,-2.9080597903916754,Coldspot (Undersampled),Namibia,Otjozondjupa,Tsumkwe
+NGA.12.3_1,668,2.36746044770455,2.2981236143214376,Hotspot (Oversampled),Nigeria,Edo,Esan Central
+NGA.12.6_1,766,2.7589086859069254,2.3097335882985974,Hotspot (Oversampled),Nigeria,Edo,Esan West
+NLD.3.35_1,169,4.627833956349304,1.4801076458538454,Hotspot (Oversampled),Netherlands,Fryslân,Waadhoeke
+NLD.10.15_1,76,0.5069027327984392,1.708405504690771,Hotspot (Oversampled),Netherlands,Overijssel,Oldenzaal
+NPL.1.3_1,0,468.6545688243421,-2.6717785515327037,Coldspot (Undersampled),Nepal,Central,Narayani
+PAK.2.1_1,0,809.547337500611,-2.9087783835459966,Coldspot (Undersampled),Pakistan,Balochistan,Kalat
+Z06.6.1_1,0,480.16961182198236,-2.682298191746029,Coldspot (Undersampled),Pakistan,Gilgit-Baltistan,Northern Areas
+PAK.7.1_1,0,563.1114148153354,-2.7513648877792054,Coldspot (Undersampled),Pakistan,Punjab,Bahawalpur
+PAK.7.2_1,0,467.130290545112,-2.6703667432231195,Coldspot (Undersampled),Pakistan,Punjab,Dera Ghazi Khan
+PAK.7.3_1,0,687.0036206814526,-2.837590723755625,Coldspot (Undersampled),Pakistan,Punjab,Faisalabad
+PAK.7.4_1,0,964.2914676305646,-2.9846584674069923,Coldspot (Undersampled),Pakistan,Punjab,Gujranwala
+PAK.7.5_1,0,1291.3360911295551,-3.111375473056495,Coldspot (Undersampled),Pakistan,Punjab,Lahore
+PAK.7.6_1,0,910.2298039343851,-2.959627915935578,Coldspot (Undersampled),Pakistan,Punjab,Multan
+PAK.7.7_1,0,727.6261953332979,-2.862504780801311,Coldspot (Undersampled),Pakistan,Punjab,Rawalpindi
+PAK.7.8_1,0,472.6262490738843,-2.675435763630487,Coldspot (Undersampled),Pakistan,Punjab,Sargodha
+PAK.8.1_1,0,646.411511573096,-2.8111804172911854,Coldspot (Undersampled),Pakistan,Sindh,Hyderabad
+PAK.8.4_1,0,471.29687059423344,-2.674215067981615,Coldspot (Undersampled),Pakistan,Sindh,Mirpur Khas
+PER.18.3_1,314,10.991192006378016,1.4194481967073522,Hotspot (Oversampled),Peru,Madre de Dios,Tambopata
+PHL.47.6_1,219,0.44631766331517375,2.182158990717532,Hotspot (Oversampled),Philippines,Metropolitan Manila,Manila
+POL.14.7_1,681,7.485768993674513,1.9050931697733708,Hotspot (Oversampled),Poland,Warmińsko-Mazurskie,Giżycko
+PRT.13.8_1,153,1.1479694362703836,1.855492623396261,Hotspot (Oversampled),Portugal,Madeira,Ribeira Brava
+PRY.8.6_1,6018,38.7615558571352,2.180060973460975,Hotspot (Oversampled),Paraguay,Canindeyú,Villa Ygatimí
+PRY.17.4_1,0,491.1428154384448,-2.692091149427072,Coldspot (Undersampled),Paraguay,Presidente Hayes,Villa Hayes
+ROU.23.41_1,83,0.03657937915509958,1.9086767209643394,Hotspot (Oversampled),Romania,Hunedoara,Martinesti
+RUS.5.12_1,390,9.072887010834082,1.589022794967539,Hotspot (Oversampled),Russia,Astrakhan',Privolzhskiy rayon
+RUS.14.1_1,0,704.0799278242114,-2.8482383513820992,Coldspot (Undersampled),Russia,City of St. Petersburg,Sankt-Peterburg gorsovet
+RUS.16.2_1,228,8.032126942352559,1.4040454495726866,Hotspot (Oversampled),Russia,Gorno-Altay,Choyskiy rayon
+RUS.42.14_1,437,5.357157149354201,1.8382111631520135,Hotspot (Oversampled),Russia,Mordovia,Krasnoslobodskiy rayon
+RUS.56.6_1,1291,23.0306822360396,1.7304964129699625,Hotspot (Oversampled),Russia,Primor'ye,Chuguevskiy rayon
+RUS.56.14_1,1325,7.0427061289188,2.217141323689051,Hotspot (Oversampled),Russia,Primor'ye,Khorol'skiy rayon
+RUS.56.33_1,7979,5.25646209257859,3.1056740737980246,Hotspot (Oversampled),Russia,Primor'ye,Yakovlevskiy rayon
+RUS.68.33_1,1723,32.7537965552094,1.7082146330550976,Hotspot (Oversampled),Russia,Tatarstan,Nizhnekamskiy rayon
+SWE.18.4_1,2714,83.94244491621095,1.5046450767011237,Hotspot (Oversampled),Sweden,Västerbotten,Lycksele
+SWE.18.12_1,3968,105.45218812360338,1.5715265061225825,Hotspot (Oversampled),Sweden,Västerbotten,Umeå
+SWE.18.15_1,3611,40.70598121520304,1.9375493983587821,Hotspot (Oversampled),Sweden,Västerbotten,Vindeln
+THA.3.19_1,470,4.517692666010526,1.9312634003972695,Hotspot (Oversampled),Thailand,Bangkok Metropolis,Huai Kwang
+THA.3.23_1,276,4.352708044491788,1.7139062129823488,Hotspot (Oversampled),Thailand,Bangkok Metropolis,Khlong Toey
+THA.5.21_1,216,3.3406645268897837,1.6989035116473592,Hotspot (Oversampled),Thailand,Buri Ram,Phutthaisong
+THA.21.5_1,214,4.60187905018179,1.5841047321516717,Hotspot (Oversampled),Thailand,Loei,Muang Loei
+THA.22.8_1,311,7.533741486552024,1.5630151114202087,Hotspot (Oversampled),Thailand,Lop Buri,Phatthana Nikhom
+THA.32.5_1,288,2.081019690067784,1.9722033689574707,Hotspot (Oversampled),Thailand,Nan,K. Phu Pieng
+THA.34.6_1,686,3.461673587942502,2.1874589425462343,Hotspot (Oversampled),Thailand,Nong Bua Lam Phu,Suwan Khuha
+TUR.13.3_1,148,4.577430568587055,1.4267520957974473,Hotspot (Oversampled),Turkey,Bartın,Merkez
+TUR.50.2_1,73,0.7315379317202786,1.6307997099232516,Hotspot (Oversampled),Turkey,Kirklareli,Demirköy
+TUR.65.1_1,139,0.4120187262376703,1.9962875792969017,Hotspot (Oversampled),Turkey,Rize,Ardeşen
+TUR.65.2_1,94,0.4982882134836813,1.8021282422018485,Hotspot (Oversampled),Turkey,Rize,Çamlıhemşin
+TUR.75.11_1,97,1.820261471622529,1.5409367012672126,Hotspot (Oversampled),Turkey,Trabzon,Maçka
+TWN.1.2_1,138,2.900006449455651,1.5519494750325484,Hotspot (Oversampled),Taiwan,Fujian,Lienkiang
+TWN.3.1_1,0,751.64106293937,-2.876587909069533,Coldspot (Undersampled),Taiwan,New Taipei,New Taipei
+TWN.4.1_1,0,2133.6500901778513,-3.3293266960546575,Coldspot (Undersampled),Taiwan,Taichung,Taichung
+TWN.6.1_1,0,2312.9847762229615,-3.364360497388371,Coldspot (Undersampled),Taiwan,Taipei,Taipei
+TWN.7.1_1,0,2140.303500567004,-3.3306782269768416,Coldspot (Undersampled),Taiwan,Taiwan,Changhua
+TWN.7.5_1,0,735.2635993379145,-2.8670333296122967,Coldspot (Undersampled),Taiwan,Taiwan,Hsinchu County
+TWN.7.8_1,0,477.36744629658233,-2.679761617521319,Coldspot (Undersampled),Taiwan,Taiwan,Miaoli
+TWN.7.15_1,0,1784.022914694323,-3.251643795608673,Coldspot (Undersampled),Taiwan,Taiwan,Yulin
+TZA.1.9_1,0,1210.5685794636074,-3.0833480019152626,Coldspot (Undersampled),Tanzania,Arusha,Ngorongoro
+TZA.2.1_1,0,3291.412491930727,-3.517514240801124,Coldspot (Undersampled),Tanzania,Dar es Salaam,Ilala
+TZA.2.2_1,0,949.4626001970323,-2.977935032461206,Coldspot (Undersampled),Tanzania,Dar es Salaam,Kinondoni
+TZA.3.1_1,0,816.7151763494093,-2.912602058096536,Coldspot (Undersampled),Tanzania,Dodoma,Bahi
+TZA.3.2_1,0,1236.9944817183907,-3.0927187088484014,Coldspot (Undersampled),Tanzania,Dodoma,Chamwino
+TZA.3.3_1,0,924.873284942658,-2.966551553187525,Coldspot (Undersampled),Tanzania,Dodoma,Chemba
+TZA.3.4_1,0,1475.458355339401,-3.1692212018589285,Coldspot (Undersampled),Tanzania,Dodoma,Dodoma Urban
+TZA.3.5_1,0,678.486298196478,-2.8321807036326656,Coldspot (Undersampled),Tanzania,Dodoma,Kondoa
+TZA.3.7_1,0,943.2744067683115,-2.975098218903652,Coldspot (Undersampled),Tanzania,Dodoma,Mpwapwa
+TZA.4.1_1,0,694.5662432748513,-2.842338496971853,Coldspot (Undersampled),Tanzania,Geita,Bukombe
+TZA.4.2_1,0,587.2855751871425,-2.769588199579984,Coldspot (Undersampled),Tanzania,Geita,Chato
+TZA.4.3_1,0,1149.7182326826328,-3.060968994375423,Coldspot (Undersampled),Tanzania,Geita,Geita
+TZA.5.5_1,0,1035.5827808261124,-3.0156039902894336,Coldspot (Undersampled),Tanzania,Iringa,Mufindi
+TZA.6.1_1,0,1001.1234453218544,-3.0009212228485147,Coldspot (Undersampled),Tanzania,Kagera,Biharamulo
+TZA.6.4_1,0,665.588814886143,-2.8238580220848144,Coldspot (Undersampled),Tanzania,Kagera,Karagwe
+TZA.6.6_1,0,977.6074732081652,-2.990608527958434,Coldspot (Undersampled),Tanzania,Kagera,Lake Victoria
+TZA.6.7_1,0,513.1589880098402,-2.7110974321058317,Coldspot (Undersampled),Tanzania,Kagera,Missenyi
+TZA.6.8_1,0,532.623972763526,-2.7272353317875258,Coldspot (Undersampled),Tanzania,Kagera,Muleba
+TZA.6.9_1,0,588.0211811462244,-2.7701309122565902,Coldspot (Undersampled),Tanzania,Kagera,Ngara
+TZA.8.4_1,0,1053.389578537012,-3.023001104755401,Coldspot (Undersampled),Tanzania,Kigoma,Kasulu
+TZA.8.5_1,0,1059.0948722076646,-3.0253447337860258,Coldspot (Undersampled),Tanzania,Kigoma,Kibondo
+TZA.8.8_1,0,894.8734070695878,-2.952246645269975,Coldspot (Undersampled),Tanzania,Kigoma,Lake Tanganyika
+TZA.8.9_1,0,1114.4226824427467,-3.047439471749195,Coldspot (Undersampled),Tanzania,Kigoma,Uvinza
+TZA.9.6_1,0,793.217938238239,-2.8999396918312432,Coldspot (Undersampled),Tanzania,Kilimanjaro,Same
+TZA.10.1_1,0,1680.7558565801871,-3.225762948753252,Coldspot (Undersampled),Tanzania,Lindi,Kilwa
+TZA.10.2_1,0,890.5443984242061,-2.950142975677962,Coldspot (Undersampled),Tanzania,Lindi,Lindi Rural
+TZA.10.4_1,0,2403.1381642019123,-3.3809594226594295,Coldspot (Undersampled),Tanzania,Lindi,Liwale
+TZA.10.5_1,0,721.9478845947165,-2.8591069912797185,Coldspot (Undersampled),Tanzania,Lindi,Nachingwea
+TZA.11.7_1,0,1716.1181001416605,-3.234800166142845,Coldspot (Undersampled),Tanzania,Manyara,Simanjiro
+TZA.12.1_1,0,578.1062425254814,-2.7627582464732763,Coldspot (Undersampled),Tanzania,Mara,Bunda
+TZA.12.3_1,0,945.8382340724265,-2.976275786763818,Coldspot (Undersampled),Tanzania,Mara,Lake Victoria
+TZA.13.1_1,0,1322.8194604274777,-3.1218287610203137,Coldspot (Undersampled),Tanzania,Mbeya,Chunya
+TZA.13.6_1,0,653.2469717527489,-2.815741721141319,Coldspot (Undersampled),Tanzania,Mbeya,Mbeya Rural
+TZA.14.5_1,13427,76.47349803230921,2.2388581671884107,Hotspot (Oversampled),Tanzania,Morogoro,Morogoro Urban
+TZA.14.7_1,0,1778.0604947974266,-3.250190715992873,Coldspot (Undersampled),Tanzania,Morogoro,Ulanga
+TZA.15.2_1,0,627.3037103897145,-2.79816962440959,Coldspot (Undersampled),Tanzania,Mtwara,Masasi
+TZA.15.3_1,0,617.0790102295958,-2.7910439953371013,Coldspot (Undersampled),Tanzania,Mtwara,Mtwara Rural
+TZA.15.5_1,0,756.4964336269467,-2.8793805924749583,Coldspot (Undersampled),Tanzania,Mtwara,Nanyumbu
+TZA.16.2_1,0,564.0458954373272,-2.7520837245020355,Coldspot (Undersampled),Tanzania,Mwanza,Kwimba
+TZA.16.3_1,0,1991.1700085852879,-3.299326397661951,Coldspot (Undersampled),Tanzania,Mwanza,Lake Victoria
+TZA.16.5_1,0,485.0923563158355,-2.686718791953057,Coldspot (Undersampled),Tanzania,Mwanza,Misungwi
+TZA.16.7_1,0,601.7401958890882,-2.780130154916936,Coldspot (Undersampled),Tanzania,Mwanza,Sengerema
+TZA.20.4_1,0,1060.775985033753,-3.0260328983593765,Coldspot (Undersampled),Tanzania,Pwani,Kisarawe
+TZA.20.6_1,0,887.5458049810674,-2.948679820816356,Coldspot (Undersampled),Tanzania,Pwani,Mkuranga
+TZA.21.1_1,0,774.8416449378291,-2.8897730875626753,Coldspot (Undersampled),Tanzania,Rukwa,Kalambo
+TZA.21.3_1,0,518.5096941709891,-2.7155936560042377,Coldspot (Undersampled),Tanzania,Rukwa,Lake Tanganyika
+TZA.22.2_1,0,1988.3614291400872,-3.2987136933413006,Coldspot (Undersampled),Tanzania,Ruvuma,Namtumbo
+TZA.22.6_1,0,1994.4161996579553,-3.3000334936884057,Coldspot (Undersampled),Tanzania,Ruvuma,Tunduru
+TZA.23.2_1,0,1030.792386521247,-3.01359231893949,Coldspot (Undersampled),Tanzania,Shinyanga,Kahama
+TZA.23.3_1,0,648.3808532545027,-2.812499479472456,Coldspot (Undersampled),Tanzania,Shinyanga,Kishapu
+TZA.23.4_1,0,604.1280258261344,-2.781847267260279,Coldspot (Undersampled),Tanzania,Shinyanga,Shinyanga Rural
+TZA.24.1_1,0,696.364914777513,-2.8434600937399583,Coldspot (Undersampled),Tanzania,Simiyu,Bariadi
+TZA.24.3_1,0,499.2887601237213,-2.6992207457955026,Coldspot (Undersampled),Tanzania,Simiyu,Itilima
+TZA.24.6_1,0,632.3962712471374,-2.8016755023867628,Coldspot (Undersampled),Tanzania,Simiyu,Maswa
+TZA.24.7_1,0,774.0022904746024,-2.889302986040518,Coldspot (Undersampled),Tanzania,Simiyu,Meatu
+TZA.25.1_1,0,1081.4873061847416,-3.0344228122898427,Coldspot (Undersampled),Tanzania,Singida,Ikungi
+TZA.25.2_1,0,663.451248198539,-2.822463121599183,Coldspot (Undersampled),Tanzania,Singida,Iramba
+TZA.31.8_1,0,735.6786642558859,-2.867278091966848,Coldspot (Undersampled),Tanzania,Songwe,Mbozi
+TZA.31.9_1,0,584.3030835980248,-2.7673808121478025,Coldspot (Undersampled),Tanzania,Songwe,Momba
+TZA.31.1_1,0,783.3073804445465,-2.8944863018024654,Coldspot (Undersampled),Tanzania,Songwe,Songwe
+TZA.26.1_1,0,1069.5980658026365,-3.029626454429441,Coldspot (Undersampled),Tanzania,Tabora,Igunga
+TZA.26.2_1,0,1745.1715776291264,-3.242086914946023,Coldspot (Undersampled),Tanzania,Tabora,Kaliua
+TZA.26.3_1,0,1300.5809008238493,-3.114471167212401,Coldspot (Undersampled),Tanzania,Tabora,Nzega
+TZA.26.4_1,0,2059.6655291442144,-3.3140075062697427,Coldspot (Undersampled),Tanzania,Tabora,Sikonge
+TZA.26.6_1,0,591.6911398698097,-2.7728284350264123,Coldspot (Undersampled),Tanzania,Tabora,Urambo
+TZA.26.7_1,0,1508.214930248762,-3.178751092906229,Coldspot (Undersampled),Tanzania,Tabora,Uyui
+TZA.27.5_1,0,474.06324186461063,-2.676751428076641,Coldspot (Undersampled),Tanzania,Tanga,Korogwe
+TZA.27.6_1,0,522.7256705583972,-2.7191038614871825,Coldspot (Undersampled),Tanzania,Tanga,Lushoto
+UKR.25.8_1,424,1.22190516602667,2.281663411336658,Hotspot (Oversampled),Ukraine,Volyn,Liuboml's'ky
+URY.9.3_2,174,5.6862885477243665,1.4178529339857673,Hotspot (Oversampled),Uruguay,Maldonado,Maldonado
+USA.2.26_1,0,680.3228648270859,-2.8333529638720374,Coldspot (Undersampled),United States,Alaska,Yukon-Koyukuk
+USA.5.26_1,1321,42.81673142703214,1.479591477546752,Hotspot (Oversampled),United States,California,Mono
+USA.6.34_1,7819,32.58832035133551,2.367018466407386,Hotspot (Oversampled),United States,Colorado,La Plata
+USA.6.37_1,4198,56.19983714132342,1.865751082361091,Hotspot (Oversampled),United States,Colorado,Las Animas
+USA.6.40_1,4748,69.03629990883965,1.831278975797403,Hotspot (Oversampled),United States,Colorado,Mesa
+USA.10.28_1,0,469.66379484981263,-2.672710792099484,Coldspot (Undersampled),United States,Florida,Hillsborough
+USA.10.48_1,0,573.1844455633855,-2.759051423448735,Coldspot (Undersampled),United States,Florida,Orange
+USA.11.41_1,900,8.46270791775353,1.9787093559038513,Hotspot (Oversampled),United States,Georgia,Dade
+USA.11.67_1,0,520.6868805943384,-2.717409915202101,Coldspot (Undersampled),United States,Georgia,Gwinnett
+USA.14.16_1,0,778.9816125294017,-2.8920843646505534,Coldspot (Undersampled),United States,Illinois,Cook
+USA.14.22_1,0,508.01717205800185,-2.706732433818558,Coldspot (Undersampled),United States,Illinois,Dupage
+USA.14.100_1,0,523.372600929998,-2.71963999122594,Coldspot (Undersampled),United States,Illinois,Will
+USA.21.16_1,0,529.53644475526,-2.7247152227565943,Coldspot (Undersampled),United States,Maryland,Prince George's
+USA.27.7_1,9985,41.4116020057872,2.3719068844224767,Hotspot (Oversampled),United States,Montana,Cascade
+USA.27.12_1,1430,17.173733451514316,1.8961954796584086,Hotspot (Oversampled),United States,Montana,Deer Lodge
+USA.27.18_1,1536,33.944849217435575,1.6432906966111203,Hotspot (Oversampled),United States,Montana,Glacier
+USA.27.24_1,8813,23.96415776400141,2.5478561276801024,Hotspot (Oversampled),United States,Montana,Lake
+USA.27.39_1,3746,21.419921396310013,2.223049607457888,Hotspot (Oversampled),United States,Montana,Powell
+USA.27.47_1,4967,17.435679434050854,2.4305224393125475,Hotspot (Oversampled),United States,Montana,Silver Bow
+USA.29.11_1,3168,44.43368769304247,1.8435442507854993,Hotspot (Oversampled),United States,Nevada,Lyon
+USA.29.12_1,5354,38.93104457367032,2.1274488039255215,Hotspot (Oversampled),United States,Nevada,Mineral
+USA.32.16_1,449,4.129234348684901,1.9431599718521835,Hotspot (Oversampled),United States,New Mexico,Los Alamos
+USA.36.25_1,0,490.89299317456073,-2.6918706362464686,Coldspot (Undersampled),United States,Ohio,Franklin
+USA.38.26_1,3195,85.49913550605238,1.5675950036028878,Hotspot (Oversampled),United States,Oregon,Multnomah
+USA.39.31_1,1156,28.71494612390425,1.5903584117750649,Hotspot (Oversampled),United States,Pennsylvania,Huntingdon
+USA.44.15_1,0,508.939813919751,-2.7075189211469812,Coldspot (Undersampled),United States,Texas,Bexar
+USA.44.57_1,0,1292.9502393468006,-3.1119175752564594,Coldspot (Undersampled),United States,Texas,Dallas
+USA.44.63_1,694,9.800958018269034,1.8085225265480325,Hotspot (Oversampled),United States,Texas,Dickens
+USA.44.64_1,4241,43.09867195829503,1.983145153394536,Hotspot (Oversampled),United States,Texas,Dimmit
+USA.44.122_1,822,23.4951868179381,1.5263190791647563,Hotspot (Oversampled),United States,Texas,Jeff Davis
+USA.44.139_1,2355,49.63273779578949,1.667743875073127,Hotspot (Oversampled),United States,Texas,La Salle
+USA.44.220_1,0,1047.66491022047,-3.0206367361529236,Coldspot (Undersampled),United States,Texas,Tarrant
+VEN.8.8_1,174,4.187076357623279,1.5281154075077552,Hotspot (Oversampled),Venezuela,Cojedes,Romulo Gallegos
+VEN.19.5_1,507,7.282352986733308,1.787709976467276,Hotspot (Oversampled),Venezuela,Portuguesa,Guanarito
+VNM.27.12_1,69,1.1383189166942382,1.5150255620453787,Hotspot (Oversampled),Vietnam,Hà Nội,Hai Bà Trưng
+VNM.23.12_1,115,0.33126031776493847,1.9401950024865366,Hotspot (Oversampled),Vietnam,Hải Phòng,Ngô Quyền
+ZAF.1.4_1,0,574.7869536146758,-2.7602618202549056,Coldspot (Undersampled),South Africa,Eastern Cape,Cacadu
+ZAF.3.1_1,0,1127.7281020494881,-3.052589337849737,Coldspot (Undersampled),South Africa,Gauteng,City of Johannesburg
+ZAF.6.2_1,0,641.4740138462575,-2.80785556644472,Coldspot (Undersampled),South Africa,Mpumalanga,Gert Sibande
+ZAF.8.3_1,0,787.1050614739777,-2.8965841166989317,Coldspot (Undersampled),South Africa,Northern Cape,Namakwa
+ZAF.8.4_1,0,863.458224913289,-2.936744010764358,Coldspot (Undersampled),South Africa,Northern Cape,Pixley ka Seme
+ZAF.8.5_1,0,620.4694403242876,-2.7934197778290932,Coldspot (Undersampled),South Africa,Northern Cape,Siyanda

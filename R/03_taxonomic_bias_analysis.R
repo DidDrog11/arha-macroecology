@@ -8,7 +8,8 @@
 # 4. Quantify Phylogenetic Bias (Pagel's Lambda).
 # ---
 
-# --- 1. Setup ---
+
+# 1. Setup ----------------------------------------------------------------
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(tidyverse, here, mgcv, patchwork, phytools, ape)
 
@@ -16,23 +17,23 @@ pacman::p_load(tidyverse, here, mgcv, patchwork, phytools, ape)
 dir.create(here("output", "models"), recursive = TRUE, showWarnings = FALSE)
 dir.create(here("output", "figures"), recursive = TRUE, showWarnings = FALSE)
 
-# --- 2. Load Processed Data ---
+# 2. Load Processed Data --------------------------------------------------
 target_orders <- c("RODENTIA", "EULIPOTYPHLA", "SORICOMORPHA", "ERINACEOMORPHA")
 
-# A. The Global Checklist (All relevant Rodents/Eulipotyphla)
+# The Global Checklist (All relevant Rodents/Eulipotyphla)
 global_traits <- read_rds(here("data", "processed", "trait_data.rds"))
 
-# B. The Analytic Subset (Phylo-matched & Imputed)
+# The Analytic Subset (Phylo-matched & Imputed)
 host_traits_analytic <- read_rds(here("data", "analytic", "host_traits_final.rds"))
 
-# C. The ArHa Database (For raw sampling counts)
-arha_db <- read_rds(here("data", "database", "Project_ArHa_database_2025-12-02.rds"))
+# The ArHa Database (For raw sampling counts)
+arha_db <- read_rds(here("data", "database", "Project_ArHa_database_2026-01-09.rds"))
 host_data <- arha_db$host
 pathogen_data <- arha_db$pathogen
 mammal_tree <- read.tree(here("data", "processed", "mammal_tree_matched.tre"))
 
-# --- 3. Sampling Effort Summary ---
-# 3.1. Calculate Effort per Species from ArHa
+# 3. Sampling Effort Summary ----------------------------------------------
+# Calculate Effort per Species from ArHa
 sampling_summary <- host_data |>
   drop_na(gbif_id, host_species) |>
   left_join(pathogen_data |> 
@@ -45,14 +46,15 @@ sampling_summary <- host_data |>
             n_pathogen_samples = sum(pathogen_samples, na.rm = TRUE),
             n_positive_samples = sum(positive_samples > 0, na.rm = TRUE))
 
-# 3.2. Join Effort to Global Checklist
+# Join Effort to Global Checklist
 bias_data <- global_traits |>
   left_join(sampling_summary, by = "gbif_id") |>
   mutate(sampling_status = if_else(!is.na(n_studies), "Sampled", "Not Sampled"),
          log_sampling_effort = log1p(replace_na(n_pathogen_samples, 0)))
 
-# --- 4. Visualising Taxonomic Bias ---
-# 4.1. By Family
+
+# 4. Visualising Taxonomic Bias -------------------------------------------
+# By Family
 family_bias <- bias_data |>
   filter(toupper(order) %in% target_orders) |>
   drop_na(family) |>
@@ -65,22 +67,32 @@ family_bias <- bias_data |>
   arrange(order, desc(prop_sampled)) |>
   mutate(family_label = fct_reorder(paste0(family, " (", total, ")"), total))
 
-p_family <- family_bias |>
+family_plot_data <- family_bias |>
   pivot_longer(cols = c(Sampled, `Not Sampled`), names_to = "status", values_to = "count") |>
-  mutate(family_label = fct_reorder(family_label, total)) |>
-  ggplot(aes(x = family_label, y = count, fill = status)) +
+  mutate(status = fct_relevel(status, "Sampled", "Not Sampled"),
+         family_label = fct_reorder(family_label, total))
+
+p_family <- ggplot(family_plot_data, aes(x = family_label, y = count, fill = status)) +
+  geom_col(position = "dodge", width = 0.8) +
   coord_flip() +
-  geom_col() +
-  scale_y_log10() +
-  facet_wrap(~order, scales = "free") +
-  scale_fill_manual(values = c("Not Sampled" = "grey90", "Sampled" = "steelblue")) +
-  labs(title = "Taxonomic Sampling Bias by Family", x = NULL, y = "Log10 Species Count") +
+  facet_grid(order ~ ., scales = "free_y", space = "free_y") +
+  scale_y_continuous(trans = "log1p", 
+                     breaks = c(0, 1, 10, 100, 1000, 10000, 100000), 
+                     labels = label_number(accuracy = 1)) +
+  scale_fill_manual(values = c("Not Sampled" = "grey80", "Sampled" = "steelblue")) +
+  labs(title = "Taxonomic Sampling Bias by Family", 
+       subtitle = "Comparison of sampled vs. unsampled diversity (Log Scale)",
+       x = NULL, 
+       y = "Number of Species (Log1p Scale)",
+       fill = NULL) +
   theme_minimal() +
-  theme(axis.text.y = element_blank(), 
-        axis.text.x = element_text(size = 8),
+  theme(panel.grid.major.y = element_blank(),
+        strip.text.y = element_text(angle = 0, face = "bold"),
         legend.position = "bottom")
 
-# 4.2. By synanthropy Status
+ggsave(here("output", "figures", "taxonomic_bias_family.png"), p_family, width = 8, height = 10, bg = "white")
+
+# By synanthropy Status
 p_syn <- bias_data |>
   count(synanthropy_status, sampling_status) |>
   mutate(synanthropy_status = replace_na(synanthropy_status, "Unknown")) |>
@@ -92,8 +104,7 @@ p_syn <- bias_data |>
   labs(title = "Sampling Bias by Synanthropy", x = NULL, y = "Proportion") +
   theme_minimal()
 
-
-# --- 5. Modelling Sampling Intensity (GAMs) ---
+# 5. Modelling Sampling Intensity -----------------------------------------
 # Analytic dataset (imputed) is used
 model_data <- host_traits_analytic |>
   left_join(sampling_summary, by = "gbif_id") |>
@@ -116,10 +127,9 @@ gam_effort <- gam(n_pathogen_samples ~
 summary(gam_effort)
 plot(gam_effort, pages = 1, scheme = 1)
 
-write_rds(gam_effort, here("output", "analysis_1", "models", "gam_sampling_effort.rds"))
+write_rds(gam_effort, here("output", "models", "gam_sampling_effort.rds"))
 
-
-# --- 6. Quantifying Phylogenetic Bias (Pagel's Lambda) ---
+# 6. Quantifying Phylogenetic Bias ----------------------------------------
 # We test if sampling effort clusters by lineage
 lambda_data <- model_data |>
   filter(tip_label %in% mammal_tree$tip.label) |>
@@ -137,12 +147,12 @@ print(lambda_res)
 # Save result text
 capture.output(lambda_res, file = here("output", "phylogenetic_bias_lambda.txt"))
 
-# --- 7. Pathogen Side Bias (Counts) ---
+# 7. Pathogen Side Bias ---------------------------------------------------
 pathogens_per_host <- pathogen_data |>
   filter(pathogen_family %in% c("Arenaviridae", "Hantaviridae")) |>
   left_join(host_data |> select(host_record_id, host_species), by = "host_record_id") |>
   drop_na(host_species, pathogen_species_cleaned) |>
-  separate_rows(pathogen_species_cleaned, sep = ",\\s*") |>
+  separate_rows(pathogen_species_cleaned, sep = "\\s*[|,;]\\s*") |>
   group_by(host_species) |>
   summarise(n_viruses_tested = n_distinct(pathogen_species_cleaned)) |>
   arrange(desc(n_viruses_tested))
@@ -153,7 +163,8 @@ p_breadth <- ggplot(pathogens_per_host, aes(x = n_viruses_tested)) +
        x = "Unique Viruses Tested per Host Species", y = "Count of Host Species") +
   theme_minimal()
 
-# --- 8. Host Pathogen ---
+
+# 8. Host-Pathogen --------------------------------------------------------
 top_hosts <- pathogens_per_host |> top_n(62, n_viruses_tested) |> pull(host_species)
 
 heatmap_data <- pathogen_data |>
@@ -161,7 +172,7 @@ heatmap_data <- pathogen_data |>
   left_join(host_data |> select(host_record_id, host_species), by = "host_record_id") |>
   filter(host_species %in% top_hosts) |>
   drop_na(pathogen_species_cleaned) |>
-  separate_rows(pathogen_species_cleaned, sep = ",\\s*") |>
+  separate_rows(pathogen_species_cleaned, sep = "\\s*[|,;]\\s*") |>
   group_by(host_species, pathogen_species_cleaned, pathogen_family) |>
   summarise(n_tested = sum(number_tested, na.rm = TRUE)) |>
   filter(n_tested > 0)
@@ -170,6 +181,8 @@ p_heatmap <- ggplot(heatmap_data, aes(x = pathogen_species_cleaned, y = host_spe
   geom_tile(color = "white") +
   scale_fill_viridis_c(option = "magma", name = "log(N Tested)") +
   facet_grid(~ pathogen_family, scales = "free_x", space = "free_x") +
-  labs(title = "Co-surveillance Landscape (Top Hosts)", x = "Pathogen", y = "Host") +
+  labs(title = "Co-surveillance Landscape", x = "Pathogen", y = "Host") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 8))
+
+ggsave(here("output", "figures", "co_surveillance.png"), p_heatmap, width = 8, height = 10, bg = "white")

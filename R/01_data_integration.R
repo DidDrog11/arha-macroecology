@@ -7,7 +7,7 @@
 # 3. Harmonise taxonomy between ArHa and trait databases.
 # ---
 
-# --- 1. Setup ---
+# 1. Setup ----------------------------------------------------------------
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(tidyverse, here, janitor, terra, taxize, missForest, broom, ape, geiger, phangorn)
 
@@ -57,13 +57,13 @@ add_gbif_ids <- function(df, name_col) {
 
 target_orders <- c("RODENTIA", "EULIPOTYPHLA", "SORICOMORPHA", "ERINACEOMORPHA")
 
-# --- 2. Load ArHa Database ---
-# Assuming you have downloaded the RDS to data/database/ per your previous structure
-arha_path <- here("data", "database", "Project_ArHa_database_2025-12-02.rds")
+
+# 2. Load ArHa ------------------------------------------------------------
+arha_path <- here("data", "database", "Project_ArHa_database_2026-01-09.rds")
 
 if (!file.exists(arha_path)) {
   message("ArHa database not found. Downloading it from the GitHub repo.")
-  arha_rds_url <- "https://raw.githubusercontent.com/DidDrog11/arenavirus_hantavirus/main/data/database/Project_ArHa_database_2025-12-02.rds"
+  arha_rds_url <- "https://raw.githubusercontent.com/DidDrog11/arenavirus_hantavirus/main/data/database/Project_ArHa_database_2026-01-09.rds"
   download.file(arha_rds_url, arha_path, mode = "wb") 
   arha_db <- read_rds(arha_path)
 } else {
@@ -74,8 +74,8 @@ host_list <- arha_db$host |>
   distinct(host_species, gbif_id) |> 
   filter(!is.na(host_species))
 
-# --- 3. Load External Trait Datasets ---
 
+# 3. Load External Databases ----------------------------------------------
 # A. COMBINE (Soria-Auza et al.) - Good for mass, litter size, lifespan
 # URL: https://figshare.com/articles/dataset/COMBINE_a_Coalesced_Mammal_Database_of_Intrinsic_and_extrinsic_traits/13028255/4?file=27703263
 # Non-imputed source used
@@ -218,15 +218,14 @@ if(!file.exists(here("data", "processed", "iucn_harmonised.rds"))) {
   
   range_areas <- expanse(iucn_aggregated, unit = "km")
   
-  iucn_data <- tibble(
-    scientific_name = iucn_aggregated$sci_name,
-    geographic_range_km2 = range_areas
-  )
+  iucn_data <- tibble(scientific_name = iucn_aggregated$sci_name,
+                      geographic_range_km2 = range_areas)
   
   iucn_with_ids <- add_gbif_ids(iucn_data, "scientific_name")
   
   iucn_unmatched <- iucn_with_ids |> 
     filter(is.na(gbif_id) | is.na(gbif_name_simple) | review_needed == TRUE)
+  
   iucn_harmonised <- iucn_with_ids |> filter(!is.na(gbif_id))
   
   write_rds(iucn_harmonised, here("data", "processed", "iucn_harmonised.rds"))
@@ -358,10 +357,8 @@ tree_input <- read.nexus("data/external/output.nex")
 
 mammal_tree_mcc <- maxCladeCred(tree_input, tree = TRUE)
 
-tree_tips_df <- tibble(
-  tip_label = mammal_tree_mcc$tip.label,
-  clean_name = str_replace_all(tip_label, "_", " ")
-)
+tree_tips_df <- tibble(tip_label = mammal_tree_mcc$tip.label,
+                       clean_name = str_replace_all(tip_label, "_", " "))
 
 tree_tips_resolved <- add_gbif_ids(tree_tips_df, name_col = "clean_name") |>
   filter(!is.na(gbif_id)) |>
@@ -397,3 +394,8 @@ if (all(trait_data_phylo_sorted$tip_label == tree_matched$tip.label)) {
   write.tree(tree_matched, here("data", "processed", "mammal_tree_matched.tre"))
   
 }
+
+# Data for descriptive analysis of range biases ---------------------------
+realm_path <- here("data", "external", "One Earth Realms", "Realm2023.shp")
+# Accessed through https://www.oneearth.org/bioregions-2023/
+realms <- vect(realm_path)

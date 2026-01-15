@@ -1,0 +1,21 @@
+Type,Location,Observed,Predicted,Fold_Difference,Z_Score
+Coldspot (Undersampled),"Shurtah al-Dakhlah, Egypt",0,"7,527.50",7529x,-4.8
+Coldspot (Undersampled),"Al-Wahat al-Kharijah, Egypt",0,"5,776.20",5777x,-4.6
+Coldspot (Undersampled),"Unorganized in Al Jizah, Egypt",0,"5,382.70",5384x,-4.6
+Coldspot (Undersampled),"Shanghai, China",0,"4,685.90",4687x,-4.5
+Coldspot (Undersampled),"Unorganized in Aswan, Egypt",0,"3,941.70",3943x,-4.4
+Coldspot (Undersampled),"Ilala, Tanzania",0,"3,291.40",3292x,-4.3
+Coldspot (Undersampled),"Al-'Amriyah, Egypt",0,"3,071.60",3073x,-4.2
+Coldspot (Undersampled),"Unorganized in Al Minya, Egypt",0,"2,791.20",2792x,-4.1
+Coldspot (Undersampled),"Marsa Matruh, Egypt",0,"2,619.90",2621x,-4.1
+Coldspot (Undersampled),"Unorganized in Asyut, Egypt",0,"2,580.00",2581x,-4.1
+Hotspot (Oversampled),"Yakovlevskiy rayon, Russia","7,979",5.30,1275x,5.5
+Hotspot (Oversampled),"Jaborá, Brazil","1,545",0.70,933x,5.3
+Hotspot (Oversampled),"General Carneiro, Brazil","1,408",1.60,548x,5
+Hotspot (Oversampled),"Lake, United States","8,813",24.00,353x,4.7
+Hotspot (Oversampled),"Silver Bow, United States","4,967",17.40,269x,4.5
+Hotspot (Oversampled),"Cascade, United States","9,985",41.40,235x,4.4
+Hotspot (Oversampled),"Al-Manshiyah, Egypt",861,2.70,233x,4.4
+Hotspot (Oversampled),"La Plata, United States","7,819",32.60,233x,4.4
+Hotspot (Oversampled),"Esan West, Nigeria",766,2.80,204x,4.3
+Hotspot (Oversampled),"Esan Central, Nigeria",668,2.40,199x,4.3

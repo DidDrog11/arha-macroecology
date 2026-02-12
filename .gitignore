@@ -195,3 +195,8 @@ data/processed/arenavirus_hantavirus/pathogen.csv
 data/processed/arenavirus_hantavirus/pathogen_taxonomy.csv
 data/processed/arenavirus_hantavirus/pathogen_taxonomy_pcr.csv
 data/processed/arenavirus_hantavirus/sequence.csv
+/data/processed/arenavirus_hantavirus/cophylogeny/pd_saturation_outputs
+data/processed/arenavirus_hantavirus/cophylogeny/pd_saturation_outputs/all_viruses_pd_curves_interactive.html
+data/processed/arenavirus_hantavirus/cophylogeny/pd_saturation_outputs/all_viruses_pd_curves_interactive.html
+/data/processed/arenavirus_hantavirus/cophylogeny/pd_saturation_outputs
+data/processed/arenavirus_hantavirus/cophylogeny/cophylogeny_residuals_distribution.ipynb

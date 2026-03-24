@@ -9,7 +9,7 @@
 
 # 1. Setup ----------------------------------------------------------------
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(tidyverse, terra, tidyterra, here, sf, rnaturalearth, cowplot, biscale, scales, patchwork)
+pacman::p_load(tidyverse, terra, tidyterra, here, sf, rnaturalearth, cowplot, biscale, scales, patchwork, countrycode)
 
 # Output Directory
 output_dir <- here("output", "figures")
@@ -69,7 +69,7 @@ map_bi <- ggplot() +
   geom_sf(data = data_bivariate, aes(fill = bi_class), colour = "white", size = 0.1, show.legend = FALSE) +
   bi_scale_fill(pal = "DkViolet2", dim = 4) +
   coord_sf(crs = "+proj=moll") +
-  labs(title = "Supplementary Figure S2: Genetic Completeness",
+  labs(title = "Genetic Completeness",
        subtitle = "Comparison of Host vs. Pathogen sequencing rates per country") +
   theme_void()
 
@@ -81,28 +81,32 @@ fig_s2 <- ggdraw() +
   draw_plot(map_bi, 0, 0, 1, 1) +
   draw_plot(legend_bi, 0.1, 0.15, 0.2, 0.2)
 
-ggsave(here(output_dir, "genetic_map.png"), fig_s2, width = 10, height = 6, bg = "white")
+ggsave(here(output_dir, "supplementary_figure_s9.png"), fig_s2, width = 10, height = 6, bg = "white")
 
-# 3. Pathogen Disconnect --------------------------------------------------
-# Aggregate PCR Detections vs Sequences
+# Which pathogen records have at least one pathogen sequence
+sequenced_records <- arha_db$sequence |>
+  filter(sequence_type == "Pathogen") |>
+  distinct(pathogen_record_id) |>
+  mutate(has_sequence = TRUE)
+
 pathogen_gap_data <- pathogen_data |>
   filter(str_detect(assay, "PCR|Sequencing|Isolation|Culture")) |>
   filter(number_positive > 0) |>
+  drop_na(pathogen_species_ncbi) |> # Removes the unclassified NA rows
+  left_join(sequenced_records, by = "pathogen_record_id") |>
+  mutate(has_sequence = replace_na(has_sequence, FALSE)) |>
   group_by(pathogen_species_ncbi, pathogen_family) |>
-  summarise(n_pcr_pos = sum(number_positive, na.rm = TRUE), .groups = "drop") |>
-  left_join(sequence_data |>
-              filter(sequence_type == "Pathogen") |>
-              left_join(pathogen_data, by = "pathogen_record_id") |>
-              group_by(pathogen_species_ncbi) |>
-              summarise(n_seq = n_distinct(accession_primary)),
-            by = "pathogen_species_ncbi") |>
-  mutate(n_seq = replace_na(n_seq, 0)) |>
+  summarise(
+    n_pcr_pos = sum(number_positive, na.rm = TRUE),
+    n_seq = sum(number_positive[has_sequence == TRUE], na.rm = TRUE),
+    .groups = "drop"
+  ) |>
   filter(n_pcr_pos > 10) |> 
   filter(str_detect(pathogen_family, "Hanta|Arena")) |>
   mutate(pathogen_species_ncbi = fct_reorder(pathogen_species_ncbi, n_pcr_pos))
 
 # Dumbbell Plot
-fig_s3 <- ggplot(pathogen_gap_data, aes(y = pathogen_species_ncbi)) +
+fig_s10 <- ggplot(pathogen_gap_data, aes(y = pathogen_species_ncbi)) +
   geom_segment(aes(x = n_seq, xend = n_pcr_pos, y = pathogen_species_ncbi, yend = pathogen_species_ncbi),
                colour = "grey60", linewidth = 0.8) +
   geom_point(aes(x = n_seq, colour = "Sequences"), size = 3) +
@@ -110,53 +114,75 @@ fig_s3 <- ggplot(pathogen_gap_data, aes(y = pathogen_species_ncbi)) +
   scale_x_log10(labels = comma) +
   scale_colour_manual(values = c("PCR+ Detections" = "#D55E00", "Sequences" = "#0072B2")) +
   facet_wrap(~ pathogen_family, scales = "free_y") +
-  labs(title = "Supplementary Figure S3: The Pathogen Genetic Gap",
+  labs(title = "The Pathogen Genetic Gap",
        subtitle = "Discrepancy between PCR detections (Orange) and available GenBank sequences (Blue)",
-       x = "Count (log scale)", y = NULL, color = NULL) +
+       x = "Count of Individual Hosts (log scale)", y = NULL, colour = NULL) +
   theme_bw() +
   theme(legend.position = "bottom",
         strip.background = element_rect(fill = "grey95"),
         axis.text.y = element_text(size = 9))
 
-ggsave(here(output_dir, "pathogen_gap.png"), fig_s3, width = 10, height = 8)
+ggsave(here(output_dir, "supplementary_figure_s10.png"), fig_s10, width = 10, height = 8, bg = "white")
 
-# --- 06_genetic_gap_stats.R ---
-
-# 1. Total Gap Stats (Paragraph Sentence 2)
+# Join to pathogen and calculate totals
 gap_total <- arha_db$pathogen |>
   filter(pathogen_family %in% c("Arenaviridae", "Hantaviridae")) |>
   filter(str_detect(assay, "PCR|Sequencing|Isolation")) |> 
   filter(number_positive > 0) |>
-  summarise(
-    total_positives = sum(number_positive, na.rm = TRUE),
-    total_sequenced = sum(number_positive[!is.na(accession_number) & accession_number != ""], na.rm = TRUE),
-    pct_sequenced = (total_sequenced / total_positives) * 100
-  )
+  left_join(sequenced_records, by = "pathogen_record_id") |>
+  mutate(has_sequence = replace_na(has_sequence, FALSE)) |>
+  summarise(total_positives = sum(number_positive, na.rm = TRUE),
+            # If a record has sequences, we assume all 'number_positive' individuals in that record were sequenced.
+            # if it doesn't, 0 were sequenced.
+            total_sequenced = sum(number_positive[has_sequence == TRUE], na.rm = TRUE),
+            pct_sequenced = round((total_sequenced / total_positives) * 100, 1))
 
 print(gap_total)
 
-# 2. Family Comparison (Paragraph Sentence 3)
+# Family Comparison
 gap_family <- arha_db$pathogen |>
   filter(pathogen_family %in% c("Arenaviridae", "Hantaviridae")) |>
   filter(str_detect(assay, "PCR|Sequencing|Isolation")) |> 
   filter(number_positive > 0) |>
+  left_join(sequenced_records, by = "pathogen_record_id") |>
+  mutate(has_sequence = replace_na(has_sequence, FALSE)) |>
   group_by(pathogen_family) |>
-  summarise(
-    pct_sequenced = (sum(number_positive[!is.na(accession_number) & accession_number != ""], na.rm = TRUE) / 
-                       sum(number_positive, na.rm = TRUE)) * 100
-  )
+  summarise(total_positives = sum(number_positive, na.rm = TRUE),
+            total_sequenced = sum(number_positive[has_sequence == TRUE], na.rm = TRUE),
+            pct_sequenced = round((total_sequenced / total_positives) * 100, 1))
 
 print(gap_family)
 
-# 3. "Supported only by non-sequence evidence" (Paragraph Sentence 5)
-# This checks ALL positive associations (including Serology)
-non_seq_evidence <- arha_db$pathogen |>
-  filter(pathogen_family %in% c("Arenaviridae", "Hantaviridae")) |>
+# Identify unique Host-Virus associations across all data (including serology)
+all_dyads <- arha_db$pathogen |>
   filter(number_positive > 0) |>
-  summarise(
-    total_associations = n(),
-    supported_by_seq = sum(!is.na(accession_number) & accession_number != ""),
-    pct_no_sequence = 100 - ((supported_by_seq / total_associations) * 100)
-  )
+  left_join(arha_db$host |> select(host_record_id, host_species), by = "host_record_id") |>
+  distinct(host_species, pathogen_species_cleaned) 
 
-print(non_seq_evidence)
+# Identify unique Host-Virus associations that have at least one sequence
+sequenced_dyads <- arha_db$pathogen |>
+  filter(number_positive > 0) |>
+  left_join(sequenced_records, by = "pathogen_record_id") |>
+  filter(has_sequence == TRUE) |>
+  left_join(arha_db$host |> select(host_record_id, host_species), by = "host_record_id") |>
+  distinct(host_species, pathogen_species_cleaned)
+
+# Calculate the gap
+total_associations <- nrow(all_dyads)
+supported_by_seq <- nrow(sequenced_dyads)
+pct_no_sequence <- round((1 - (supported_by_seq / total_associations)) * 100, 1)
+
+regional_gap <- arha_db$pathogen |>
+  filter(pathogen_family %in% c("Arenaviridae", "Hantaviridae")) |>
+  filter(str_detect(assay, "PCR|Sequencing|Isolation")) |> 
+  filter(number_positive > 0) |>
+  left_join(sequenced_records, by = "pathogen_record_id") |>
+  mutate(has_sequence = replace_na(has_sequence, FALSE)) |>
+  left_join(arha_db$host |> select(host_record_id, iso3c), by = "host_record_id") |>
+  mutate(region = countrycode(iso3c, origin = "iso3c", destination = "un.regionsub.name")) |>
+  group_by(region) |>
+  summarise(total_positives = sum(number_positive, na.rm = TRUE),
+            total_sequenced = sum(number_positive[has_sequence == TRUE], na.rm = TRUE)) |>
+  filter(total_positives > 50) |> 
+  mutate(pct_unsequenced = round((1 - (total_sequenced / total_positives)) * 100, 1)) |>
+  arrange(desc(pct_unsequenced))

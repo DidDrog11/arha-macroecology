@@ -4,7 +4,7 @@
 # ==============================================================================
 
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(tidyverse, here, brms, countrycode, terra, tidyterra, sf)
+pacman::p_load(tidyverse, here, brms, countrycode, terra, tidyterra, sf, biscale, cowplot, rnaturaleart, exactextractr)
 
 # 1. Load Inputs ----------------------------------------------------------
 # Load the Model (N=49k)
@@ -42,12 +42,12 @@ species_risk <- full_pred_frame |>
 get_isos <- function(region_name) {
   code_list <- countrycode::codelist
   
-  isos <- code_list %>%
+  isos <- code_list |>
     filter(un.regionsub.name == region_name | 
              region == region_name | 
-             region23 == region_name) %>%
-    pull(iso3c) %>%
-    unique() %>%
+             region23 == region_name) |>
+    pull(iso3c) |>
+    unique() |>
     na.omit()
   
   return(as.character(isos))
@@ -98,6 +98,8 @@ p_geo_risk <- ggplot(plot_data, aes(x = region, y = pred_prob, fill = region)) +
   theme_minimal() +
   theme(legend.position = "none",
         axis.text.x = element_text(angle = 45, hjust = 1, face="bold"))
+
+ggsave(here("output", "figures", "supplementary_figure_s7.png"), p_geo_risk, width = 8, height = 6, bg = "white")
 
 stats <- pairwise.t.test(risk_map_data$pred_prob, risk_map_data$region, p.adjust.method = "bonferroni")
 print(stats)

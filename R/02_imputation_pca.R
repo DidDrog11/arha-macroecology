@@ -5,7 +5,6 @@
 # 1. Load aligned trait data and phylogeny.
 # 2. Impute missing life-history traits using phylogenetic covariance (Rphylopars).
 # 3. Perform PCA to generate the "Pace of Life" axis (PC1).
-# 4. Quantify phylogenetic bias in sampling effort.
 # ---
 
 if (!require("pacman")) install.packages("pacman")

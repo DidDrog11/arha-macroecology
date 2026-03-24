@@ -26,7 +26,7 @@ world_map <- ne_countries(scale = "medium", returnclass = "sv") |>
   makeValid()
 
 # Calculate residuals Observed vs. Predicted
-pred_counts <- posterior_epred(model_adm2_zinb, ndraws = 500) %>% apply(2, mean)
+pred_counts <- posterior_epred(model_adm2_zinb, ndraws = 500) |> apply(2, mean)
 
 residual_data <- model_data |>
   mutate(predicted = pred_counts,
@@ -70,7 +70,7 @@ p_map_residuals <- ggplot() +
                        limits = c(-2.5, 2.5),
                        oob = scales::squish) +
   labs(title = "Global Mismatch in Sampling Effort",
-       subtitle = "Blue = Oversampled (Hotspot) | Orange = Undersampled (Coldspot)") +
+       subtitle = "Blue = Undersampled (Surveillance Coldspot) | Orange = Oversampled (Surveillance Hotspot)") +
   theme(legend.position = "bottom")
 
 ggsave(here("output", "figures", "global_residual_map.png"), 
@@ -78,54 +78,76 @@ ggsave(here("output", "figures", "global_residual_map.png"),
        width = 12, height = 7, dpi = 300, bg = "white")
 
 # 3. Inset Maps -----------------------------------------------------------
-sampled_centroids <- map_data_resid |>
-  centroids() |>
-  crds()
+# Convert data to unprojected WGS84 for undistorted insets
+map_data_resid_4326 <- project(map_data_resid, "EPSG:4326")
+world_map_4326 <- project(world_map, "EPSG:4326")
 
-# K-means clustering to find dense sampling regions
-set.seed(123)
-kmeans_result <- kmeans(sampled_centroids, centers = 15, nstart = 25)
-clusters <- tibble(x = sampled_centroids[,1], y = sampled_centroids[,2], cluster = kmeans_result$cluster)
+# Define Lat/Lon coordinates for the insets
+insets_bbox <- list(
+  us   = c(xmin = -125, xmax = -75, ymin = 25, ymax = 50),
+  wafr = c(xmin = -18,  xmax = 15,  ymin = 0,  ymax = 20),
+  asia = c(xmin = 45,   xmax = 90,  ymin = 27, ymax = 58)
+)
 
-# Define regions of interest
-roi_list <- list()
+col_us   <- "#E69F00"
+col_wafr <- "#56B4E9"
+col_asia <- "#009E73"
 
-# Create zoomed maps function
-create_inset <- function(data, xlim, ylim, title) {
+# Zoomed maps function
+create_inset <- function(data_4326, bg_4326, bbox, title, box_colour) {
   ggplot() +
     theme(panel.background = element_rect(fill = bg_colour, colour = NA),
           plot.background = element_rect(fill = bg_colour, colour = NA),
           panel.grid = element_blank(),
           axis.text = element_blank(),
           axis.ticks = element_blank(),
-          panel.border = element_rect(colour = "grey30", fill = NA, linewidth = 0.8),
+          panel.border = element_rect(colour = box_colour, fill = NA, linewidth = 2),
           plot.title = element_text(colour = text_colour, size = 10, face = "bold", hjust = 0.5)) +
-    geom_spatvector(data = world_map, fill = land_colour, colour = NA) +
-    geom_spatvector(data = data, aes(fill = log_residual), colour = NA, show.legend = FALSE) +
+    geom_spatvector(data = bg_4326, fill = land_colour, colour = NA) +
+    geom_spatvector(data = data_4326, aes(fill = log_residual), colour = NA, show.legend = FALSE) +
     scale_fill_gradient2(low = colour_cold, mid = land_colour, high = colour_hot,
-                         midpoint = 0,
-                         limits = c(-2.5, 2.5),
-                         oob = scales::squish) +
-    coord_sf(xlim = xlim, ylim = ylim, expand = FALSE) +
+                         midpoint = 0, limits = c(-2.5, 2.5), oob = scales::squish) +
+    geom_spatvector(data = bg_4326, fill = NA, colour = "grey20", linewidth = 0.6) +
+    coord_sf(xlim = c(bbox["xmin"], bbox["xmax"]), 
+             ylim = c(bbox["ymin"], bbox["ymax"]), 
+             expand = FALSE, crs = 4326) +
     labs(title = title)
 }
 
-# Define coordinates based on the global map (currently placeholders)
-inset_asia <- create_inset(data = map_data_resid, 
-                           xlim = c(5e6, 1.0e7),  ylim = c(3e6, 6.5e6), 
-                           title = "Central Asia\n(Han et al. Novel Hotspot)")
-inset_us <- create_inset(data = map_data_resid, xlim = c(-1.1e7, -0.7e7), ylim = c(3.5e6, 6e6),
-                         title = "US Midwest\n(Han et al. Hotspot)")
-inset_wafr <- create_inset(data = map_data_resid, xlim = c(-2.5e6, 2e6), ylim = c(0, 3e6),
-                           title = "West Africa\n(Lassa Fever Belt)")
+# Generate the three insets
+inset_us   <- create_inset(map_data_resid_4326, world_map_4326, insets_bbox$us,   "US Midwest\n(Han et al. Hotspot)", col_us)
+inset_wafr <- create_inset(map_data_resid_4326, world_map_4326, insets_bbox$wafr, "West Africa\n(Lassa Fever Belt)", col_wafr)
+inset_asia <- create_inset(map_data_resid_4326, world_map_4326, insets_bbox$asia, "Central Asia\n(Han et al. Novel Hotspot)", col_asia)
 
-# Assemble
-layout <- (p_map_residuals / (inset_us | inset_wafr | inset_asia)) + 
+# Create bounding box polygons to overlay on the main Mollweide map
+create_bbox_poly <- function(bbox) {
+  pol_str <- sprintf("POLYGON((%f %f, %f %f, %f %f, %f %f, %f %f))",
+                     bbox["xmin"], bbox["ymin"], bbox["xmax"], bbox["ymin"],
+                     bbox["xmax"], bbox["ymax"], bbox["xmin"], bbox["ymax"],
+                     bbox["xmin"], bbox["ymin"])
+  vect(pol_str, crs = "EPSG:4326") |> project(mollweide_crs)
+}
+
+bbox_us_moll   <- create_bbox_poly(insets_bbox$us)
+bbox_wafr_moll <- create_bbox_poly(insets_bbox$wafr)
+bbox_asia_moll <- create_bbox_poly(insets_bbox$asia)
+
+# Add the semi-transparent coloured anchors to the main map
+p_map_residuals_anchored <- p_map_residuals +
+  geom_spatvector(data = bbox_us_moll,   fill = scales::alpha(col_us, 0.2),   colour = col_us,   linewidth = 1) +
+  geom_spatvector(data = bbox_wafr_moll, fill = scales::alpha(col_wafr, 0.2), colour = col_wafr, linewidth = 1) +
+  geom_spatvector(data = bbox_asia_moll, fill = scales::alpha(col_asia, 0.2), colour = col_asia, linewidth = 1)
+
+# Assemble using the new anchored main map
+row_1 <- wrap_elements(p_map_residuals_anchored + labs(title = "a) Global Surveillance Mismatch"))
+row_2 <- (inset_us | inset_wafr | inset_asia)
+
+figure_1 <- row_1 / row_2 + 
   plot_layout(heights = c(2, 1)) & 
-  theme(plot.background = element_rect(fill = bg_colour, colour = NA))
+  theme(plot.background = element_rect(fill = "white", colour = NA))
 
-ggsave(here("output", "figures", "fig_2_a.png"), 
-       layout, width = 12, height = 10, dpi = 300)
+ggsave(here("output", "figures", "figure_1_surveillance_map.png"), 
+       figure_1, width = 12, height = 10, dpi = 300, bg = "white")
 
 # 4. Hotspot-Coldspot Table -----------------------------------------------
 
@@ -197,28 +219,10 @@ p_access <- create_mfx_plot(model_adm2_zinb, "s_access", "c) Effect of Remotenes
 # 3. Biodiversity (Richness)
 p_rich   <- create_mfx_plot(model_adm2_zinb, "s_richness", "d) Effect of Host Richness", y_limit = common_ylim)
 
-# Combine
-mfx_grid <- (p_light + p_access + p_rich)
-ggsave(here("output", "figures", "marginal_effects_bias.png"), mfx_grid, width = 12, height = 4)
-
-# Combine for Figure 1
-row_1 <- wrap_elements(p_map_residuals + labs(title = "a) Global Surveillance Mismatch"))
-
-# Define the middle row (Insets)
-row_2 <- (inset_us | inset_wafr | inset_asia)
-
-# Define the bottom row (MFX)
-row_3 <- (p_light | p_access | p_rich)
-
-# Stitch them together
-figure_1 <- row_1 / row_2 / row_3 +
-  plot_layout(heights = c(2, 1, 1.2)) & 
-  theme(plot.background = element_rect(fill = "white", colour = NA))
-
-# Save
-ggsave(here("output", "figures", "figure_1_combined.png"), 
-       figure_1, width = 12, height = 14, dpi = 300, bg = "white")
-
+# Combine the Marginal Effects for Supplementary Figure
+mfx_grid <- (p_light + p_access + p_rich) +
+  plot_annotation(title = "Marginal Effects of Surveillance Bias")
+ggsave(here("output", "figures", "supplementary_figure_s3.png"), mfx_grid, width = 12, height = 4, bg = "white")
 
 # 6. DHARMa Diagnostics ---------------------------------------------------
 # Simulate residuals
@@ -241,8 +245,8 @@ coords <-  tibble(x = crds(gadm_adm2_proj)[, 1],
 # This test can be slow, so we run it on a subset if N is huge
 if(nrow(coords) > 5000) {
   idx <- sample(1:nrow(coords), 5000)
-  testSpatialAutocorrelation(sim_res, x = coords$x[idx], y = coords$y[idx])
+  testSpatialAutocorrelation(dharma_obj, x = coords$x[idx], y = coords$y[idx])
 } else {
-  testSpatialAutocorrelation(sim_res, x = coords$x, y = coords$y)
+  testSpatialAutocorrelation(dharma_obj, x = coords$x, y = coords$y)
 }
 

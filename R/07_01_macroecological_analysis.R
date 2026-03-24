@@ -65,7 +65,8 @@ model_data <- dyad_frame |>
   left_join(obs_exposed, by = c("host_join_name" = "host_species", "pathogen_species_cleaned")) |>
   mutate(status_active = replace_na(status_active, 0),
          status_exposed = replace_na(status_exposed, 0),
-         is_reservoir = pmax(status_active, status_exposed))
+         is_reservoir = pmax(status_active, status_exposed),
+         is_reservoir_strict = status_active)
 
 # 3. Add Predictors -------------------------------------------------------
 # Host Sampling Effort
@@ -81,6 +82,15 @@ model_data_full <- model_data |>
   mutate(host_id = tip_label) |>
   filter(log_effort > 0) |>
   select(is_reservoir, log_effort, pace_of_life_pc1, tip_label, host_id, pathogen_species_cleaned) |>
+  drop_na()
+
+model_data_sens_full <- model_data |>
+  left_join(host_traits, by = "tip_label") |>
+  left_join(host_effort, by = c("host_join_name" = "host_species")) |>
+  mutate(log_effort = replace_na(log_effort, 0)) |>
+  mutate(host_id = tip_label) |>
+  filter(log_effort > 0) |>
+  select(is_reservoir_strict, log_effort, pace_of_life_pc1, tip_label, host_id, pathogen_species_cleaned) |>
   drop_na()
 
 model_data_synanthropy <- model_data |>
@@ -127,6 +137,25 @@ fit_dyadic_a <- brm(formula = formula,
                   normalize = FALSE,
                   control = list(adapt_delta = 0.98, max_treedepth = 12),
                   file = here("output", "models", "brms_dyadic_N49k.rds"))
+
+formula_sens <- bf(is_reservoir_strict ~ log_effort + pace_of_life_pc1 + 
+                     (1 | gr(tip_label, cov = A)) + 
+                     (1 | host_id) +                  
+                     (1 | pathogen_species_cleaned))
+
+fit_dyadic_a_sens <- brm(formula = formula_sens,
+                         data = model_data_sens_full,
+                         data2 = list(A = A),
+                         family = bernoulli(link = "logit"),
+                         prior = priors_sparse,
+                         chains = 8, 
+                         cores = 8, 
+                         iter = 2500,   
+                         warmup = 1500,
+                         refresh = 40,
+                         normalize = FALSE,
+                         control = list(adapt_delta = 0.98, max_treedepth = 12),
+                         file = here("output", "models", "brms_dyadic_sens_strict.rds"))
 
 formula_2 <- bf(is_reservoir ~ log_effort + synanthropy_status + pace_of_life_pc1 + 
                 (1 | gr(tip_label, cov = A)) +  # Phylogenetic Signal

@@ -11,7 +11,7 @@
 
 # 1. Setup ----------------------------------------------------------------
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(tidyverse, here, mgcv, patchwork, phytools, ape)
+pacman::p_load(tidyverse, here, mgcv, patchwork, phytools, ape, scales)
 
 # Create output directories
 dir.create(here("output", "models"), recursive = TRUE, showWarnings = FALSE)
@@ -72,37 +72,38 @@ family_plot_data <- family_bias |>
   mutate(status = fct_relevel(status, "Sampled", "Not Sampled"),
          family_label = fct_reorder(family_label, total))
 
-p_family <- ggplot(family_plot_data, aes(x = family_label, y = count, fill = status)) +
-  geom_col(position = "dodge", width = 0.8) +
+p_family <- ggplot(family_bias, aes(x = family_label, y = prop_sampled)) +
+  geom_col(fill = "steelblue", width = 0.8) +
   coord_flip() +
   facet_grid(order ~ ., scales = "free_y", space = "free_y") +
-  scale_y_continuous(trans = "log1p", 
-                     breaks = c(0, 1, 10, 100, 1000, 10000, 100000), 
-                     labels = label_number(accuracy = 1)) +
-  scale_fill_manual(values = c("Not Sampled" = "grey80", "Sampled" = "steelblue")) +
-  labs(title = "Taxonomic Sampling Bias by Family", 
-       subtitle = "Comparison of sampled vs. unsampled diversity (Log Scale)",
+  # Use a linear percent scale from 0 to 100%
+  scale_y_continuous(labels = scales::percent, limits = c(0, 1)) +
+  labs(title = "Taxonomic Sampling Coverage", 
+       subtitle = "Proportion of Species Sampled per Family",
        x = NULL, 
-       y = "Number of Species (Log1p Scale)",
-       fill = NULL) +
+       y = "Proportion of Species Sampled") +
   theme_minimal() +
   theme(panel.grid.major.y = element_blank(),
-        strip.text.y = element_text(angle = 0, face = "bold"),
-        legend.position = "bottom")
+        strip.text.y = element_text(angle = 0, face = "bold"))
 
 ggsave(here("output", "figures", "taxonomic_bias_family.png"), p_family, width = 8, height = 10, bg = "white")
 
 # By synanthropy Status
 p_syn <- bias_data |>
+  mutate(synanthropy_status = case_when(synanthropy_status == "Totally Synanthropic" ~ "TS",
+                                        synanthropy_status == "Occasionally Synanthropic" ~ "OS",
+                                        synanthropy_status == "Not Synanthropic" ~ "NS",
+                                        TRUE ~ "Unknown")) |>
+  mutate(synanthropy_status = fct_relevel(synanthropy_status, "NS", "OS", "TS", "Unknown")) |>
   count(synanthropy_status, sampling_status) |>
-  mutate(synanthropy_status = replace_na(synanthropy_status, "Unknown")) |>
-  drop_na(synanthropy_status) |>
   ggplot(aes(x = synanthropy_status, y = n, fill = sampling_status)) +
   geom_col(position = "fill") +
   scale_y_continuous(labels = scales::percent) +
   scale_fill_manual(values = c("Not Sampled" = "grey80", "Sampled" = "firebrick")) +
-  labs(title = "Sampling Bias by Synanthropy", x = NULL, y = "Proportion") +
-  theme_minimal()
+  labs(title = "Sampling Bias by Synanthropy", 
+       fill = NULL, x = NULL, y = "Proportion") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
 
 # 5. Modelling Sampling Intensity -----------------------------------------
 # Analytic dataset (imputed) is used
@@ -160,7 +161,7 @@ pathogens_per_host <- pathogen_data |>
 p_breadth <- ggplot(pathogens_per_host, aes(x = n_viruses_tested)) +
   geom_bar(fill = "steelblue") +
   labs(title = "Surveillance Breadth", 
-       x = "Unique Viruses Tested per Host Species", y = "Count of Host Species") +
+       x = "Unique Viruses Tested per Species", y = "Count of Species") +
   theme_minimal()
 
 
@@ -186,3 +187,12 @@ p_heatmap <- ggplot(heatmap_data, aes(x = pathogen_species_cleaned, y = host_spe
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, size = 8))
 
 ggsave(here("output", "figures", "co_surveillance.png"), p_heatmap, width = 8, height = 10, bg = "white")
+
+
+# Extended figure bias ----------------------------------------------------
+extended_data_fig_1 <- p_family / (p_syn | p_breadth) +
+  plot_annotation(tag_levels = 'a') +
+  plot_layout(heights = c(2, 1))
+
+ggsave(here("output", "figures", "supplementary_figure_s2.png"), 
+       extended_data_fig_1, width = 12, height = 10, bg = "white")

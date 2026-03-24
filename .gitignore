@@ -203,3 +203,4 @@ data/processed/arenavirus_hantavirus/cophylogeny/cophylogeny_residuals_distribut
 data/processed/arenavirus_hantavirus/cophylogeny/rds_dump_arena_cophylo_results_dput.txt
 data/processed/arenavirus_hantavirus/cophylogeny/rds_dump_hanta_cophylo_results_dput.txt
 data/processed/arenavirus_hantavirus/cophylogeny/pd_saturation_outputs/all_viruses_pd_curves_interactive.html
+output/models/*.rds

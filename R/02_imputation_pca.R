@@ -74,3 +74,29 @@ final_host_traits <- trait_data |>
          everything())
 
 write_rds(final_host_traits, here("data", "analytic", "host_traits_final.rds"))
+
+# PCA on raw data for sensitivity analysis
+complete_traits <- trait_data |> 
+  drop_na(all_of(pol_vars)) |> 
+  mutate(across(all_of(pol_vars), log10))
+
+# PCA on empirical data
+pca_raw <- prcomp(select(complete_traits, all_of(pol_vars)), 
+                  center = TRUE, 
+                  scale. = TRUE)
+
+pc_raw_scores <- as.data.frame(pca_raw$x[, 1:3]) |> 
+  rename(pace_of_life_pc1_raw = PC1,
+         repro_strategy_pc2_raw = PC2,
+         maternal_investment_pc3_raw = PC3)
+
+if (pca_raw$rotation["adult_mass_g", "PC1"] < 0) {
+  # Flipping loadings as above
+  pc_raw_scores$pace_of_life_pc1_raw <- pc_raw_scores$pace_of_life_pc1_raw * -1
+}
+
+host_traits_sensitivity <- complete_traits |> 
+  select(tip_label, gbif_id) |> 
+  bind_cols(pc_raw_scores)
+
+write_rds(host_traits_sensitivity, here("data", "analytic", "host_traits_sensitivity_raw.rds"))

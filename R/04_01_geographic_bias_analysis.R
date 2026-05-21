@@ -503,6 +503,35 @@ model_adm2_zinb <- brm(bf(n_hosts ~ s_pop + s_light + s_access + s_richness + of
 
 summary(model_adm2_zinb)
 
+export_full_summary <- function(mod, file) {
+  s <- summary(mod)
+  fix <- as.data.frame(s$fixed) |> 
+    rownames_to_column("Parameter") |> 
+    mutate(Type = "Fixed Effects")
+  
+  if (length(s$random) > 0) {
+    rnd <- bind_rows(lapply(names(s$random), function(g) {
+      as.data.frame(s$random[[g]]) |> mutate(Parameter = paste0("sd_", g), Type = "Variance Components")
+    }))
+  } else {
+    rnd <- data.frame()
+  }
+  
+  if (length(s$spec_pars) > 0) {
+    spc <- as.data.frame(s$spec_pars) |> 
+      rownames_to_column("Parameter") |> 
+      mutate(Type = "Distributional Parameters")
+  } else {
+    spc <- data.frame()
+  }
+  
+  bind_rows(fix, rnd, spc) |>
+    select(Type, Parameter, Estimate, Est.Error, `l-95% CI`, `u-95% CI`, Rhat, Bulk_ESS, Tail_ESS) |>
+    write_csv(here("output", "tables", file))
+}
+
+export_full_summary(model_adm2_zinb, "table_s1_zinb.csv")
+
 # Geographic Realms -------------------------------------------------------
 realm_path <- here("data", "external", "One Earth Realms", "Realm2023.shp")
 realms_vect <- vect(realm_path)

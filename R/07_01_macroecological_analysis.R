@@ -175,3 +175,67 @@ fit_dyadic_b <- brm(formula = formula_2,
                   normalize = FALSE,
                   control = list(adapt_delta = 0.98, max_treedepth = 12),
                   file = here("output", "models", "brms_dyadic_N19k.rds"))
+
+# 6. Complete-Case Sensitivity Analysis (Non-Imputed) ---------------------
+# Load the raw sensitivity traits
+host_traits_raw <- read_rds(here("data", "analytic", "host_traits_sensitivity_raw.rds"))
+
+# Prepare the data: 476 complete cases
+model_data_raw_sens <- model_data |>
+  inner_join(host_traits_raw, by = "tip_label") |>
+  left_join(host_effort, by = c("host_join_name" = "host_species")) |>
+  mutate(log_effort = replace_na(log_effort, 0),
+         host_id = tip_label) |>
+  filter(log_effort > 0) |>
+  select(is_reservoir, log_effort, pace_of_life_pc1_raw, tip_label, host_id, pathogen_species_cleaned) |>
+  drop_na()
+
+# Subset the covariance matrix to complete-case species
+A_raw <- ape::vcv.phylo(host_tree)
+valid_raw_hosts <- unique(model_data_raw_sens$tip_label)
+A_raw <- A_raw[valid_raw_hosts, valid_raw_hosts]
+
+# Define the formula using the raw PCA axis
+formula_3 <- bf(is_reservoir ~ log_effort + pace_of_life_pc1_raw + 
+                    (1 | gr(tip_label, cov = A_raw)) + 
+                    (1 | host_id) + 
+                    (1 | pathogen_species_cleaned))
+
+# Fit the sensitivity model
+fit_dyadic_c <- brm(formula = formula_3,
+                    data = model_data_raw_sens,
+                    data2 = list(A_raw = A_raw),
+                    family = bernoulli(link = "logit"),
+                    prior = priors_sparse,
+                    chains = 8, 
+                    cores = 8, 
+                    iter = 2500,   
+                    warmup = 1500,
+                    refresh = 20,
+                    normalize = FALSE,
+                    control = list(adapt_delta = 0.98, max_treedepth = 12),
+                    file = here("output", "models", "brms_dyadic_sens_raw.rds"))
+
+# Extract fixed effects to check the stability of the β coefficient and pd
+fixef(fit_dyadic_3, probs = c(0.025, 0.975))
+bayesplot::mcmc_areas(fit_dyadic_3, pars = "b_pace_of_life_pc1_raw", prob = 0.95)
+
+# Extract variance components to ensure phylogeny isn't artificially inflated
+VarCorr(fit_dyadic_3)
+
+# 7. Export model summaries -----------------------------------------------
+export_full_summary <- function(mod, file) {
+  s <- summary(mod)
+  fix <- as.data.frame(s$fixed) |> rownames_to_column("Parameter") |> mutate(Type = "Fixed Effects")
+  rnd <- bind_rows(lapply(names(s$random), \(g) as.data.frame(s$random[[g]]) |> mutate(Parameter = paste0("sd_", g), Type = "Variance Components")))
+  
+  bind_rows(fix, rnd) |>
+    select(Type, Parameter, Estimate, Est.Error, `l-95% CI`, `u-95% CI`, Rhat, Bulk_ESS, Tail_ESS) |>
+    write_csv(here("output", "tables", file))
+}
+
+# Export all four models
+export_full_summary(fit_dyadic_a, "table_s2_full.csv")
+export_full_summary(fit_dyadic_b, "table_s3_synanthropy.csv")
+export_full_summary(fit_dyadic_a_sens, "table_s4_strict.csv")
+export_full_summary(fit_dyadic_3, "table_s5_complete.csv")

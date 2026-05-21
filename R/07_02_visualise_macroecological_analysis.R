@@ -12,7 +12,6 @@ pacman::p_load(tidyverse, here, brms, tidybayes, patchwork, ggdist, cowplot)
 output_dir <- here("output", "figures")
 dir.create(output_dir, showWarnings = FALSE)
 
-
 # Visualisation Function --------------------------------------------------
 visualise_reservoir_model <- function(fit_model, plot_subtitle, filename) {
   
@@ -158,41 +157,54 @@ if (file.exists(here("output", "models", "brms_dyadic_sens_strict.rds"))) {
     plot_subtitle = "Sensitivity Test: Molecular & Isolation Only",
     filename = here(output_dir, "dyadic_glmm_sensitivity_strict.png")
   )
+}
+
+if (file.exists(here("output", "models", "brms_dyadic_sens_raw.rds"))) {
+  fit_raw <- read_rds(here("output", "models", "brms_dyadic_sens_raw.rds"))
+}
+
+# --- Generate Posterior Comparison Plot (Full vs Strict vs Raw) ---
+if (exists("fit_global") && exists("fit_sens") && exists("fit_raw")) {
   
-  # --- Generate Posterior Comparison Plot (Full vs Strict) ---
-  if (exists("fit_global")) {
-    draws_full <- fit_global |>
-      gather_draws(b_pace_of_life_pc1) |>
-      mutate(model_type = "Full (Molecular + Serology)")
-    
-    draws_strict <- fit_sens |>
-      gather_draws(b_pace_of_life_pc1) |>
-      mutate(model_type = "Strict (Molecular Only)")
-    
-    compare_draws <- bind_rows(draws_full, draws_strict) |>
-      mutate(model_type = fct_rev(model_type))
-    
-    pd_labels <- compare_draws |>
-      group_by(model_type) |>
-      summarise(pd = mean(.value < 0),
-                median_val = median(.value),
-                label = paste0("pd = ", round(pd * 100, 1), "%"))
-    
-    p_compare <- ggplot(compare_draws, aes(x = .value, y = model_type, fill = model_type)) +
-      geom_vline(xintercept = 0, linetype = "dashed", colour = "grey50", linewidth = 1) +
-      stat_halfeye(alpha = 0.7, .width = c(0.5, 0.95), point_colour = "black") +
-      geom_text(data = pd_labels, aes(x = median_val, label = label), 
-                nudge_y = 0.3, fontface = "italic", colour = "grey20") +
-      scale_fill_manual(values = c("Full (Molecular + Serology)" = "#56B4E9", 
-                                   "Strict (Molecular Only)" = "#D55E00")) +
-      labs(title = "Sensitivity Analysis: Pace of Life Effect",
-           x = "Effect Size (Log-Odds)",
-           y = NULL) +
-      theme_minimal() +
-      theme(legend.position = "none",
-            plot.title = element_text(face = "bold"),
-            axis.text.y = element_text(face = "bold", size = 10))
+  draws_full <- fit_global |>
+    gather_draws(b_pace_of_life_pc1) |>
+    mutate(model_type = "Full Model (Imputed, Broad Exposure)")
+  
+  draws_strict <- fit_sens |>
+    gather_draws(b_pace_of_life_pc1) |>
+    mutate(model_type = "Strict Model (Imputed, Active Infection Only)")
+  
+  draws_raw <- fit_raw |>
+    gather_draws(b_pace_of_life_pc1_raw) |>
+    mutate(model_type = "Complete Cases (Empirical Traits, Broad Exposure)")
+  
+  compare_draws <- bind_rows(draws_full, draws_strict, draws_raw) |>
+    mutate(model_type = fct_relevel(model_type, 
+                                    "Complete Cases (Empirical Traits, Broad Exposure)", 
+                                    "Strict Model (Imputed, Active Infection Only)", 
+                                    "Full Model (Imputed, Broad Exposure)"))
+  
+  pd_labels <- compare_draws |>
+    group_by(model_type) |>
+    summarise(pd = mean(.value < 0),
+              median_val = median(.value),
+              label = paste0("pd = ", round(pd * 100, 1), "%"))
+  
+  p_compare <- ggplot(compare_draws, aes(x = .value, y = model_type, fill = model_type)) +
+    geom_vline(xintercept = 0, linetype = "dashed", colour = "grey50", linewidth = 1) +
+    stat_halfeye(alpha = 0.7, .width = c(0.5, 0.95), point_colour = "black") +
+    geom_text(data = pd_labels, aes(x = median_val, label = label), 
+              nudge_y = 0.3, fontface = "italic", colour = "grey20") +
+    scale_fill_manual(values = c("Full Model (Imputed, Broad Exposure)" = "#56B4E9", 
+                                 "Strict Model (Imputed, Active Infection Only)" = "#D55E00",
+                                 "Complete Cases (Empirical Traits, Broad Exposure)" = "#009E73")) +
+    labs(title = "Sensitivity Analysis: Pace of Life Effect",
+         x = "Effect Size (Log-Odds)",
+         y = NULL) +
+    theme_minimal() +
+    theme(legend.position = "none",
+          plot.title = element_text(face = "bold"),
+          axis.text.y = element_text(face = "bold", size = 10))
     
     ggsave(here(output_dir, "supplementary_figure_s6.png"), p_compare, width = 8, height = 5, bg = "white")
-  }
-}
+    }

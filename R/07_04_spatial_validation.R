@@ -4,14 +4,16 @@
 # ==============================================================================
 
 if (!require("pacman")) install.packages("pacman")
-pacman::p_load(tidyverse, here, brms, countrycode, terra, tidyterra, sf, biscale, cowplot, rnaturaleart, exactextractr)
+pacman::p_load(tidyverse, here, brms, countrycode, terra, tidyterra, sf, biscale, cowplot, rnaturalearth, exactextractr)
 
 # 1. Load Inputs ----------------------------------------------------------
 # Load the Model (N=49k)
 fit_dyadic <- read_rds(here("output", "models", "brms_dyadic_N49k.rds")) 
 
-# Load Host Traits
+# Load Host Traits and Tree
 host_traits <- read_rds(here("data", "analytic", "host_traits_final.rds"))
+host_tree <- read.tree(here("data", "processed", "mammal_tree_matched.tre"))
+A <- ape::vcv.phylo(host_tree)[unique(fit_dyadic$data$tip_label), unique(fit_dyadic$data$tip_label)]
 
 # Load Country/ISO data
 arha_db <- read_rds(here("data", "database", "Project_ArHa_database_2026-01-09.rds"))
@@ -65,34 +67,118 @@ risk_map_data <- species_geo |>
   drop_na(pred_prob) |>
   mutate(region = "Rest of World")
 
+risk_map_clean <- risk_map_data |>
+  arrange(region == "Rest of World") |> 
+  # Keep only the first occurrence
+  distinct(tip_label, .keep_all = TRUE)
+
 # We assign species to a Hotspot if they occur in any country within that hotspot.
 for (r in names(regions_list)) {
   if(r != "Rest of World") {
-    risk_map_data <- risk_map_data |>
+    risk_map_clean <- risk_map_clean |>
       mutate(region = if_else(iso3c %in% regions_list[[r]], r, region))
   }
 }
 
-risk_map_clean <- risk_map_data |>
-  distinct(region, host_species, .keep_all = TRUE)
+# 4. Leave-One-Region-Out Spatial Validation ------------------------------
+model_data_full <- fit_dyadic$data |>
+  left_join(risk_map_clean |> select(tip_label, iso3c, region), by = "tip_label") |>
+  mutate(cv_continent = countrycode(iso3c, "iso3c", "continent")) |>
+  mutate(cv_continent = if_else(cv_continent %in% c("Americas"), "Americas", cv_continent)) |>
+  drop_na(cv_continent)
 
-# 4. Visualise ------------------------------------------------------------
-risk_summary <- risk_map_data |>
+loro_predictions <- list()
+cv_folds <- unique(model_data_full$cv_continent)
+
+for (target_fold in cv_folds) {
+  message("Withholding Continent: ", target_fold)
+  
+  # Train on all other continents, test on the target continent
+  train_data <- model_data_full |> filter(cv_continent != target_fold)
+  test_data  <- model_data_full |> filter(cv_continent == target_fold)
+  
+  if(nrow(test_data) == 0) next
+  
+  # Prune tree matrix strictly to training subset
+  A_train <- A[unique(train_data$tip_label), unique(train_data$tip_label)]
+  
+  formula_cv <- bf(is_reservoir ~ log_effort + pace_of_life_pc1 + 
+                     (1 | gr(tip_label, cov = A_train)) + 
+                     (1 | host_id) + 
+                     (1 | pathogen_species_cleaned))
+  
+  # Reduced iterations for CV efficiency
+  fit_cv <- brm(formula = formula_cv,
+                data = train_data,
+                data2 = list(A_train = A_train),
+                family = bernoulli(link = "logit"),
+                prior = c(prior(normal(0, 1), class = "b"),
+                          prior(normal(-4, 2), class = "Intercept"),
+                          prior(normal(0, 1), class = "sd")),
+                chains = 4, cores = 4, iter = 2000, warmup = 1000, 
+                control = list(adapt_delta = 0.98),
+                file = here("output", "models", paste0("brms_loro_", str_replace_all(target_fold, " ", "_"), ".rds")))
+  
+  # Predict back onto the withheld region (out-of-sample biological potential)
+  # Max effort, new pathogen, fixed effects only
+  test_pred_frame <- test_data |>
+    distinct(tip_label, pace_of_life_pc1) |>
+    mutate(log_effort = max(train_data$log_effort),
+           pathogen_species_cleaned = "NewPathogen")
+  
+  preds_cv <- posterior_epred(fit_cv, newdata = test_pred_frame, re_formula = NA)
+  
+  test_pred_frame$pred_prob_cv <- colMeans(preds_cv)
+  test_pred_frame$withheld_region <- target_fold
+  
+  loro_predictions[[target_fold]] <- test_pred_frame
+}
+
+# Combine and correlate LORO predictions vs Full Model predictions
+final_cv_df <- bind_rows(loro_predictions) |>
+  left_join(species_risk |> rename(pred_prob_full = pred_prob), by = "tip_label")
+
+cv_correlation <- cor.test(final_cv_df$pred_prob_cv, final_cv_df$pred_prob_full, method = "spearman", exact = FALSE)
+
+# 5. Visualise Out-of-Sample Validation Boxplots --------------------------
+# Format LORO predictions for plotting
+species_risk_loro <- final_cv_df |> 
+  select(tip_label, pred_prob = pred_prob_cv) |>
+  mutate(host_species = str_replace_all(tip_label, "_", " "))
+
+risk_map_loro_data <- species_geo |>
+  inner_join(species_risk_loro, by = "host_species") |> 
+  drop_na(pred_prob) |>
+  mutate(region = "Rest of World")
+
+# Ensure 1 species = 1 data point, prioritising hotspots
+risk_map_loro_clean <- risk_map_loro_data |>
+  arrange(region == "Rest of World") |> 
+  distinct(tip_label, .keep_all = TRUE)
+
+for (r in names(regions_list)) {
+  if(r != "Rest of World") {
+    risk_map_loro_clean <- risk_map_loro_clean |>
+      mutate(region = if_else(iso3c %in% regions_list[[r]], r, region))
+  }
+}
+
+risk_summary <- risk_map_loro_clean |>
   group_by(region) |>
   summarise(mean_risk = mean(pred_prob), 
             median_risk = median(pred_prob), 
             n_species = n_distinct(host_species)) |>
   arrange(desc(median_risk))
 
-plot_data <- risk_map_data |>
+plot_data <- risk_map_loro_clean |>
   mutate(region = factor(region, levels = risk_summary$region))
 
 p_geo_risk <- ggplot(plot_data, aes(x = region, y = pred_prob, fill = region)) +
   geom_boxplot(outlier.shape = NA, alpha = 0.7) +
   geom_jitter(width = 0.2, alpha = 0.1, size = 0.5) +
   scale_fill_brewer(palette = "RdYlBu", direction = -1) +
-  labs(title = "Intrinsic Reservoir Potential by Region",
-       subtitle = "Model predictions based on Host Biology (Traits) only",
+  labs(title = "Intrinsic Reservoir Potential by Region (Validation)",
+       subtitle = "LORO cross-validated model predictions based on Host Biology only",
        y = "Predicted Reservoir Probability",
        x = NULL) +
   theme_minimal() +
@@ -101,10 +187,11 @@ p_geo_risk <- ggplot(plot_data, aes(x = region, y = pred_prob, fill = region)) +
 
 ggsave(here("output", "figures", "supplementary_figure_s7.png"), p_geo_risk, width = 8, height = 6, bg = "white")
 
-stats <- pairwise.t.test(risk_map_data$pred_prob, risk_map_data$region, p.adjust.method = "bonferroni")
+# Validation stats
+stats <- pairwise.t.test(risk_map_loro_clean$pred_prob, risk_map_loro_clean$region, p.adjust.method = "bonferroni")
 print(stats)
 
-# 5. Subnational Risk Maps ------------------------------------------------
+# 6. Subnational Risk Maps ------------------------------------------------
 iucn_path <- here("data", "external", "iucn", "MAMMALS_TERRESTRIAL_ONLY.shp")
 iucn <- vect(iucn_path)
 iucn_harmonised <- read_rds(here("data", "external", "iucn_harmonised.rds"))
@@ -155,7 +242,7 @@ data_bivariate <- bi_class(df_map,
 
 p_raster_map <- ggplot() +
   geom_sf(data = world_sf, fill = "grey20", colour = NA) +
-  geom_raster(data = data_bivariate, aes(x = x, y = y, fill = bi_class)) +
+  geom_tile(data = data_bivariate, aes(x = x, y = y, fill = bi_class)) +
   bi_scale_fill(pal = "DkBlue", dim = 3) +
   labs(title = "Global Landscape of Zoonotic Potential",
        subtitle = "Community Competence (Hazard) vs. Species Richness",

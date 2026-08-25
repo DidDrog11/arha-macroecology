@@ -6,7 +6,6 @@
 # 2. Generate Supplementary Figure S3: Pathogen Genetic Disconnect (Dumbbell Plot).
 # ==============================================================================
 
-
 # 1. Setup ----------------------------------------------------------------
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(tidyverse, terra, tidyterra, here, sf, rnaturalearth, cowplot, biscale, scales, patchwork, countrycode)
@@ -16,7 +15,7 @@ output_dir <- here("output", "figures")
 dir.create(output_dir, showWarnings = FALSE)
 
 # Load Database
-arha_db <- read_rds(here("data", "database", "Project_ArHa_database_2026-01-09.rds"))
+arha_db <- read_rds(here("data", "database", "Project_ArHa_database_2026-08-17.rds"))
 
 host_data <- arha_db$host
 pathogen_data <- arha_db$pathogen
@@ -155,12 +154,14 @@ print(gap_family)
 
 # Identify unique Host-Virus associations across all data (including serology)
 all_dyads <- arha_db$pathogen |>
+  filter(pathogen_family %in% c("Arenaviridae", "Hantaviridae")) |>
   filter(number_positive > 0) |>
   left_join(arha_db$host |> select(host_record_id, host_species), by = "host_record_id") |>
-  distinct(host_species, pathogen_species_cleaned) 
+  distinct(host_species, pathogen_species_cleaned)
 
 # Identify unique Host-Virus associations that have at least one sequence
 sequenced_dyads <- arha_db$pathogen |>
+  filter(pathogen_family %in% c("Arenaviridae", "Hantaviridae")) |>
   filter(number_positive > 0) |>
   left_join(sequenced_records, by = "pathogen_record_id") |>
   filter(has_sequence == TRUE) |>
@@ -186,3 +187,15 @@ regional_gap <- arha_db$pathogen |>
   filter(total_positives > 50) |> 
   mutate(pct_unsequenced = round((1 - (total_sequenced / total_positives)) * 100, 1)) |>
   arrange(desc(pct_unsequenced))
+
+# 3. Revision Table 3: Regional genetic sequencing completeness -----------
+revision_table_3 <- regional_gap |>
+  rename(region = region,
+         n_positive_hosts = total_positives,
+         n_sequenced = total_sequenced,
+         pct_unsequenced = pct_unsequenced) |>
+  mutate(pct_sequenced = round(100 - pct_unsequenced, 1)) |>
+  select(region, n_positive_hosts, n_sequenced, pct_sequenced, pct_unsequenced) |>
+  arrange(desc(pct_unsequenced))
+
+write_csv(revision_table_3, here("output", "tables", "revision_table_3_regional_sequencing_gap.csv"))

@@ -1,0 +1,10 @@
+metric,value
+Hazard: min,0.00683
+Hazard: median,0.01443
+Hazard: mean,0.01435
+Hazard: max,0.01958
+Richness: min,2
+Richness: median,15
+Richness: mean,15.88
+Richness: max,77
+N non-NA cells (hazard),327039

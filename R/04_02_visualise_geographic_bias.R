@@ -84,13 +84,13 @@ world_map_4326 <- project(world_map, "EPSG:4326")
 
 # Define Lat/Lon coordinates for the insets
 insets_bbox <- list(
-  us   = c(xmin = -125, xmax = -75, ymin = 25, ymax = 50),
+  us   = c(xmin = -120, xmax = -104, ymin = 31, ymax = 49),
   wafr = c(xmin = -18,  xmax = 15,  ymin = 0,  ymax = 20),
   asia = c(xmin = 45,   xmax = 90,  ymin = 27, ymax = 58)
 )
 
-col_us   <- "#E69F00"
-col_wafr <- "#56B4E9"
+col_us   <- "#CC79A7"
+col_wafr <- "#B8860B"
 col_asia <- "#009E73"
 
 # Zoomed maps function
@@ -115,7 +115,18 @@ create_inset <- function(data_4326, bg_4326, bbox, title, box_colour) {
 }
 
 # Generate the three insets
-inset_us   <- create_inset(map_data_resid_4326, world_map_4326, insets_bbox$us,   "US Midwest\n(Han et al. Hotspot)", col_us)
+us_states <- gadm_adm2_proj |>
+  filter(GID_0 == "USA") |>
+  filter(!NAME_1 %in% c("Alaska", "Hawaii")) |>
+  aggregate(by = "NAME_1") |>
+  makeValid()
+
+inset_us <- create_inset(map_data_resid_4326, world_map_4326, insets_bbox$us, 
+                         "Intermountain West\n(Han et al. Hotspot)", col_us) +
+  geom_spatvector(data = project(us_states, "EPSG:4326"), fill = NA, colour = "grey20", linewidth = 0.4) +
+  coord_sf(xlim = c(insets_bbox$us["xmin"], insets_bbox$us["xmax"]),
+           ylim = c(insets_bbox$us["ymin"], insets_bbox$us["ymax"]),
+           expand = FALSE, crs = 4326)
 inset_wafr <- create_inset(map_data_resid_4326, world_map_4326, insets_bbox$wafr, "West Africa\n(Lassa Fever Belt)", col_wafr)
 inset_asia <- create_inset(map_data_resid_4326, world_map_4326, insets_bbox$asia, "Central Asia\n(Han et al. Novel Hotspot)", col_asia)
 
@@ -159,32 +170,50 @@ thresh_cold <- mean_res - (3 * sd_res)
 
 message("Thresholds | Hotspot: > ", round(thresh_hot, 2), " | Coldspot: < ", round(thresh_cold, 2))
 
-# Extract and Classify Outliers
+realm_path <- here("data", "external", "One Earth Realms", "Realm2023.shp")
+realms_vect <- vect(realm_path)
+
+district_centroids_4326 <- centroids(gadm_adm2_proj) |> project("EPSG:4326")
+district_centroids_4326$realm <- extract(realms_vect, district_centroids_4326)$BioGeoRelm
+
+realm_lookup <- tibble(GID_2 = district_centroids_4326$GID_2, 
+                       realm = district_centroids_4326$realm)
+
+# 2. Rebuild anomalies with State/Province and realm attached
 anomalies <- residual_data |>
   mutate(type = case_when(log_residual > thresh_hot ~ "Hotspot (Oversampled)",
                           log_residual < thresh_cold ~ "Coldspot (Undersampled)",
                           TRUE ~ "Normal")) |>
   filter(type != "Normal") |>
   left_join(as.data.frame(gadm_adm2_proj) |>
-              select(GID_2, COUNTRY, NAME_1, NAME_2), by = "GID_2")
+              select(GID_2, COUNTRY, NAME_1, NAME_2), by = "GID_2") |>
+  left_join(realm_lookup, by = "GID_2") |>
+  mutate(NAME_2 = if_else(str_detect(NAME_2, "^Unorganized"), 
+                          paste0(NAME_1, " (unincorporated)"), NAME_2))
 
-# Format the Table for Manuscript
-extreme_table <- anomalies |>
-  group_by(type) |>
-  arrange(desc(abs(log_residual))) |> # Sort by magnitude of error
-  slice_head(n = 10) |>               # Take top 10 most extreme of each class
-  ungroup() |>
-  mutate(Location = paste0(NAME_2, ", ", COUNTRY),
-         Fold_Difference = paste0(round(10^abs(log_residual), 0), "x"),
+# 3. Fold-difference fix: plain comparison for true-zero coldspots, 
+#    genuine fold-multiplier only where both sides are non-zero
+extreme_table_realm <- anomalies |>
+  mutate(Location = paste0(NAME_2, ", ", NAME_1, ", ", COUNTRY),
+         Comparison = case_when(
+           n_hosts == 0 ~ paste0("0 observed vs. ", comma(round(predicted, 0)), " predicted"),
+           TRUE ~ paste0(round(10^abs(log_residual), 0), "x difference")
+         ),
          Observed = comma(n_hosts),
          Predicted = comma(round(predicted, 1)),
          Residual_Z = round((log_residual - mean_res) / sd_res, 1)) |>
-  select(Type = type, Location, Observed, Predicted, Fold_Difference, Z_Score = Residual_Z)
+  select(Type = type, Realm = realm, Location, Observed, Predicted, Comparison, Z_Score = Residual_Z)
 
-print(extreme_table)
+# 4. Per-realm stratified extremes, not pure global top-N
+extreme_table_by_realm <- extreme_table_realm |>
+  group_by(Type, Realm) |>
+  arrange(desc(abs(Z_Score))) |>
+  slice_head(n = 3) |>
+  ungroup() |>
+  arrange(Realm, Type, desc(abs(Z_Score)))
 
-# Save Outputs
-write_csv(extreme_table, here("output", "tables", "table_1_surveillance_extremes.csv"))
+print(extreme_table_by_realm)
+write_csv(extreme_table_by_realm, here("output", "tables", "supp_table_surveillance_extremes_by_realm.csv"))
 write_csv(anomalies, here("output", "tables", "supp_table_all_anomalies.csv"))
 
 # 5. Marginal Effects -----------------------------------------------------
@@ -213,11 +242,11 @@ create_mfx_plot <- function(model, predictor, title, y_limit = NULL) {
 common_ylim <- max(predict(model_adm2_zinb, newdata = datagrid(model = model_adm2_zinb, s_light = seq(-2, 5, length.out=100)), type = "response")[,1])
 
 # 1. Night Lights (Wealth/Infra)
-p_light  <- create_mfx_plot(model_adm2_zinb, "s_light", "b) Effect of Night Lights", y_limit = common_ylim)
+p_light  <- create_mfx_plot(model_adm2_zinb, "s_light", "a) Effect of Night Lights", y_limit = common_ylim)
 # 2. Accessibility (Travel Time)
-p_access <- create_mfx_plot(model_adm2_zinb, "s_access", "c) Effect of Remoteness", y_limit = common_ylim)
+p_access <- create_mfx_plot(model_adm2_zinb, "s_access", "b) Effect of Remoteness", y_limit = common_ylim)
 # 3. Biodiversity (Richness)
-p_rich   <- create_mfx_plot(model_adm2_zinb, "s_richness", "d) Effect of Host Richness", y_limit = common_ylim)
+p_rich   <- create_mfx_plot(model_adm2_zinb, "s_richness", "c) Effect of Host Richness", y_limit = common_ylim)
 
 # Combine the Marginal Effects for Supplementary Figure
 mfx_grid <- (p_light + p_access + p_rich) +
@@ -237,16 +266,120 @@ png(here("output", "figures", "dharma_diagnostics.png"), width = 800, height = 4
 plot(dharma_obj)
 dev.off()
 
-# Check for Spatial Autocorrelation
-coords <-  tibble(x = crds(gadm_adm2_proj)[, 1],
-                  y = crds(gadm_adm2_proj)[, 2],
-                  GID_2 = gadm_adm2_proj$GID_2)
+centroid_lookup <- tibble(
+  GID_2 = gadm_adm2_proj$GID_2,
+  x = crds(centroids(gadm_adm2_proj))[, 1],
+  y = crds(centroids(gadm_adm2_proj))[, 2]
+)
 
-# This test can be slow, so we run it on a subset if N is huge
-if(nrow(coords) > 5000) {
-  idx <- sample(1:nrow(coords), 5000)
-  testSpatialAutocorrelation(dharma_obj, x = coords$x[idx], y = coords$y[idx])
+# residual_data already has exactly one row per modelled district, 
+# in the same order the model was fit on
+coords <- residual_data |>
+  select(GID_2) |>
+  left_join(centroid_lookup, by = "GID_2")
+
+set.seed(123)  # reproducibility
+if (nrow(coords) > 5000) {
+  idx <- sample(seq_len(nrow(coords)), 5000)
 } else {
-  testSpatialAutocorrelation(dharma_obj, x = coords$x, y = coords$y)
+  idx <- seq_len(nrow(coords))
 }
 
+dharma_sub <- createDHARMa(
+  simulatedResponse = t(preds_sim)[idx, ],
+  observedResponse = model_adm2_zinb$data$n_hosts[idx],
+  fittedPredictedResponse = pred_counts[idx],
+  integerResponse = TRUE
+)
+
+testSpatialAutocorrelation(dharma_sub, x = coords$x[idx], y = coords$y[idx])
+
+# 7. Trait Data Completeness by Biogeographic Realm ------------------------
+# R1's "Eltonian shortfall" comment — check whether Afrotropical genera
+# genuinely show higher trait-data missingness. Reuses realm_lookup
+# (already built above) and adm2_genus_lookup (already computed).
+
+trait_data <- read_rds(here("data", "processed", "trait_data_phylo_matched.rds"))
+
+if (!exists("pol_vars")) {
+  pol_vars <- c("adult_mass_g", "litter_size", "litters_per_year", "gestation_d",
+                "weaning_d", "age_first_reproduction_d", "max_longevity_d")
+}
+
+# Genus -> realm via majority-occurrence, same rule already validated in
+# 07_04's region-assignment fix (a genus spans many districts/realms;
+# assign it to whichever realm accounts for the plurality of its overlaps).
+genus_realm_majority <- adm2_genus_lookup |>
+  left_join(realm_lookup, by = "GID_2") |>
+  drop_na(realm) |>
+  count(genus, realm) |>
+  group_by(genus) |>
+  slice_max(n, n = 1, with_ties = FALSE) |>
+  ungroup() |>
+  select(genus, realm)
+
+trait_data_realm <- trait_data |>
+  left_join(genus_realm_majority, by = "genus")
+
+# Proportion imputed per trait, Afrotropic vs rest of world
+imputation_by_realm <- trait_data_realm |>
+  mutate(realm_group = if_else(realm == "Afrotropic", "Afrotropic", "Rest of World")) |>
+  select(realm_group, all_of(pol_vars)) |>
+  pivot_longer(-realm_group, names_to = "trait", values_to = "value") |>
+  group_by(realm_group, trait) |>
+  summarise(pct_missing = round(100 * mean(is.na(value)), 1), n = n(), .groups = "drop") |>
+  pivot_wider(names_from = realm_group, values_from = c(pct_missing, n))
+
+imputation_by_realm_full <- trait_data_realm |>
+  filter(!is.na(realm)) |>
+  select(realm, all_of(pol_vars)) |>
+  pivot_longer(-realm, names_to = "trait", values_to = "value") |>
+  group_by(realm, trait) |>
+  summarise(pct_missing = round(100 * mean(is.na(value)), 1), .groups = "drop")
+
+# Full trait x realm grid
+imputation_by_realm_full |>
+  pivot_wider(names_from = trait, values_from = pct_missing) |>
+  print(n = Inf)
+
+# Single summary: mean % missing across all 7 traits, per realm
+imputation_by_realm_full |>
+  group_by(realm) |>
+  summarise(mean_pct_missing = round(mean(pct_missing), 1),
+            n_species = sum(trait_data_realm$realm == first(realm), na.rm = TRUE)) |>
+  arrange(desc(mean_pct_missing))
+
+
+# 8. Family-Specific Testing Skew by Region ---------------------------------
+# R2's "number sampled" comment, extended: does testing effort concentrate
+# on one viral family within a region, independent of the species-level
+# log_effort covariate? E.g. is North America predominantly Hantaviridae-
+# tested, and the Lassa belt predominantly Arenaviridae-tested?
+
+arha_db$pathogen |> count(non_integer)
+
+family_effort_by_country <- arha_db$pathogen |>
+  filter(pathogen_family %in% c("Arenaviridae", "Hantaviridae")) |>
+  left_join(arha_db$host |> select(host_record_id, iso3c), by = "host_record_id") |>
+  drop_na(iso3c, number_tested) |>
+  group_by(iso3c, pathogen_family) |>
+  summarise(n_tested = sum(number_tested, na.rm = TRUE), .groups = "drop") |>
+  pivot_wider(names_from = pathogen_family, values_from = n_tested, values_fill = 0) |>
+  mutate(total_tested = Arenaviridae + Hantaviridae,
+         pct_arenaviridae = round(100 * Arenaviridae / total_tested, 1),
+         pct_hantaviridae = round(100 * Hantaviridae / total_tested, 1)) |>
+  filter(total_tested >= 50) |>  
+  arrange(desc(total_tested))
+
+print(family_effort_by_country, n = 30)
+
+## Direct check on the two named examples
+family_effort_by_country |> filter(iso3c %in% c("USA", "NGA", "SLE", "LBR", "GIN"))
+
+family_effort_by_country |>
+  ggplot(aes(x = reorder(iso3c, pct_arenaviridae), y = pct_arenaviridae)) +
+  geom_col() +
+  coord_flip() +
+  labs(title = "Family-specific testing skew by country",
+       subtitle = "% of individuals tested for Arenaviridae vs. Hantaviridae (min. 50 tested)",
+       x = NULL, y = "% Arenaviridae")

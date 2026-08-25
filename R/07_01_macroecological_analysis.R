@@ -19,7 +19,7 @@ host_traits <- read_rds(here("data", "analytic", "host_traits_final.rds"))
 host_tree <- read.tree(here("data", "processed", "mammal_tree_matched.tre"))
 
 # The Raw ArHa Database
-arha_db <- read_rds(here("data", "database", "Project_ArHa_database_2026-01-09.rds"))
+arha_db <- read_rds(here("data", "database", "Project_ArHa_database_2026-08-17.rds"))
 
 # 2. Data Preparation -----------------------------------------------------
 valid_pathogens <- arha_db$pathogen |>
@@ -119,12 +119,12 @@ priors_sparse <- c(prior(normal(0, 1), class = "b"),        # Tighter prior on s
                    prior(normal(0, 1), class = "sd")          # Random effects
                    )
 
-formula <- bf(is_reservoir ~ log_effort + pace_of_life_pc1 + 
-                (1 | gr(tip_label, cov = A)) +  # Phylogenetic Signal
-                (1 | host_id) +                 # Non-Phylogenetic Noise
-                (1 | pathogen_species_cleaned))
+formula_global <- bf(is_reservoir ~ log_effort + pace_of_life_pc1 + 
+                       (1 | gr(tip_label, cov = A)) +  # Phylogenetic Signal
+                       (1 | host_id) +                 # Non-Phylogenetic Noise
+                       (1 | pathogen_species_cleaned))
 
-fit_dyadic_a <- brm(formula = formula,
+fit_dyadic_a <- brm(formula = formula_global,
                   data = model_data_full,
                   data2 = list(A = A),
                   family = bernoulli(link = "logit"),
@@ -217,11 +217,11 @@ fit_dyadic_c <- brm(formula = formula_3,
                     file = here("output", "models", "brms_dyadic_sens_raw.rds"))
 
 # Extract fixed effects to check the stability of the β coefficient and pd
-fixef(fit_dyadic_3, probs = c(0.025, 0.975))
-bayesplot::mcmc_areas(fit_dyadic_3, pars = "b_pace_of_life_pc1_raw", prob = 0.95)
+fixef(fit_dyadic_c, probs = c(0.025, 0.975))
+bayesplot::mcmc_areas(fit_dyadic_c, pars = "b_pace_of_life_pc1_raw", prob = 0.95)
 
 # Extract variance components to ensure phylogeny isn't artificially inflated
-VarCorr(fit_dyadic_3)
+VarCorr(fit_dyadic_c)
 
 # 7. Export model summaries -----------------------------------------------
 export_full_summary <- function(mod, file) {
@@ -238,4 +238,81 @@ export_full_summary <- function(mod, file) {
 export_full_summary(fit_dyadic_a, "table_s2_full.csv")
 export_full_summary(fit_dyadic_b, "table_s3_synanthropy.csv")
 export_full_summary(fit_dyadic_a_sens, "table_s4_strict.csv")
-export_full_summary(fit_dyadic_3, "table_s5_complete.csv")
+export_full_summary(fit_dyadic_c, "table_s5_complete.csv")
+
+# 8. Synanthropy Box-Plot -------------------------------------------------
+
+p_syn_pace <- ggplot(model_data_synanthropy, aes(x = synanthropy_status, y = pace_of_life_pc1, fill = synanthropy_status)) +
+  geom_boxplot(alpha = 0.7, outlier.alpha = 0.3) +
+  labs(title = "Pace of life by synanthropy status",
+       subtitle = "ANOVA: F(2, 18903) = 77.4, p < 0.001",
+       x = NULL, y = "Pace of Life (PC1)") +
+  theme_minimal() + theme(legend.position = "none")
+
+ggsave(here("output", "figures", "revision_fig_synanthropy_pace.png"), p_syn_pace, width = 6, height = 5, bg = "white")
+
+
+# --- Revision Tables: Descriptive summary of modelled taxa ---------------
+# R1 methodological comment 3: taxonomic and geographic context for the
+# species and viruses included in the analytic datasets.
+
+# Apply the same separate_rows split to the lookup before joining, so
+# ambiguous multi-name labels (e.g. "Virus A | Virus B") match the
+# split names used in model_data_full.
+pathogen_lookup_split <- arha_db$pathogen |>
+  filter(!is.na(pathogen_species_cleaned)) |>
+  separate_rows(pathogen_species_cleaned, sep = "\\s*[|,;]\\s*") |>
+  distinct(pathogen_species_cleaned, pathogen_family, pathogen_genus_ncbi)
+
+detections_split <- arha_db$pathogen |>
+  filter(!is.na(pathogen_species_cleaned), number_positive > 0) |>
+  separate_rows(pathogen_species_cleaned, sep = "\\s*[|,;]\\s*") |>
+  left_join(arha_db$host |> select(host_record_id, iso3c), by = "host_record_id") |>
+  group_by(pathogen_species_cleaned) |>
+  summarise(n_positive = sum(number_positive, na.rm = TRUE),
+            n_countries = n_distinct(iso3c, na.rm = TRUE),
+            .groups = "drop")
+
+virus_summary <- model_data_full |>
+  distinct(pathogen_species_cleaned) |>
+  left_join(pathogen_lookup_split, by = "pathogen_species_cleaned") |>
+  left_join(detections_split, by = "pathogen_species_cleaned") |>
+  left_join(
+    model_data_full |>
+      filter(is_reservoir == 1) |>
+      group_by(pathogen_species_cleaned) |>
+      summarise(n_host_species = n_distinct(tip_label), .groups = "drop"),
+    by = "pathogen_species_cleaned") |>
+  mutate(across(c(n_positive, n_countries, n_host_species), ~replace_na(.x, 0))) |>
+  arrange(pathogen_family, desc(n_host_species)) |>
+  select(pathogen_species_cleaned, pathogen_family, pathogen_genus_ncbi,
+         n_host_species, n_positive, n_countries)
+
+write_csv(virus_summary, here("output", "tables", "revision_table_virus_summary.csv"))
+
+# --- Host species summary ---
+# 704 species is too many to print individually; summarise by family.
+host_summary <- model_data_full |>
+  distinct(tip_label, log_effort) |>
+  mutate(host_species = str_replace_all(tip_label, "_", " ")) |>
+  left_join(host_traits |> select(tip_label, family, pace_of_life_pc1), by = "tip_label") |>
+  left_join(
+    model_data_full |>
+      filter(is_reservoir == 1) |>
+      group_by(tip_label) |>
+      summarise(n_virus_assoc = n_distinct(pathogen_species_cleaned), .groups = "drop"),
+    by = "tip_label") |>
+  mutate(n_virus_assoc = replace_na(n_virus_assoc, 0),
+         n_individuals = round(exp(log_effort) - 1)) |>
+  group_by(family) |>
+  summarise(n_species = n(),
+            n_species_with_assoc = sum(n_virus_assoc > 0),
+            median_individuals_tested = median(n_individuals, na.rm = TRUE),
+            median_pace_of_life = round(median(pace_of_life_pc1, na.rm = TRUE), 2),
+            .groups = "drop") |>
+  arrange(desc(n_species))
+
+write_csv(host_summary, here("output", "tables", "revision_table_host_summary.csv"))
+
+print(virus_summary)
+print(host_summary, n = 40)

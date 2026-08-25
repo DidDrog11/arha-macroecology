@@ -1,0 +1,8 @@
+trait_name,unit,source,n_total,pct_imputed,min,median,mean,sd,max
+Adult body mass,g,COMBINE (Soria-Auza et al. 2021),2695,4.2,1.6,57.5,295.5,1552,51570
+Litter size,n,COMBINE (Soria-Auza et al. 2021),2695,45.9,0.97,3.33,3.545,1.548,9.5
+Litters per year,n,COMBINE (Soria-Auza et al. 2021),2695,72,0.5,2.225,2.68,1.556,10
+Gestation length,days,COMBINE (Soria-Auza et al. 2021),2695,69.8,13.46,28.24,37.28,27.76,289
+Weaning age,days,COMBINE (Soria-Auza et al. 2021),2695,71.8,1.94,26.29,31.34,19.38,140
+Age at first reproduction,days,COMBINE (Soria-Auza et al. 2021),2695,75.3,39,125.6,211.5,193.8,1216
+Maximum longevity,days,COMBINE (Soria-Auza et al. 2021),2695,62.3,30.42,1518,2007,1722,12780

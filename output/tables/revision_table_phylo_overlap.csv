@@ -1,0 +1,5 @@
+fold,n_test_genera,n_shared_with_training,pct_genera_shared
+Americas,91,8,8.8
+Asia,60,16,26.7
+Europe,24,9,37.5
+Africa,54,7,13

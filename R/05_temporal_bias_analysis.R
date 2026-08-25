@@ -14,12 +14,11 @@ output_dir <- here("output", "figures")
 
 # Load Database
 # Using the harmonised version from our workflow
-arha_db <- read_rds(here("data", "database", "Project_ArHa_database_2026-01-09.rds"))
+arha_db <- read_rds(here("data", "database", "Project_ArHa_database_2026-08-17.rds"))
 
 host_data <- arha_db$host
 pathogen_data <- arha_db$pathogen
 citations_data <- arha_db$citations
-
 
 # 2. Data Prep ------------------------------------------------------------
 # Host Temporal Data

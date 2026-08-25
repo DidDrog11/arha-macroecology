@@ -8,7 +8,6 @@
 # 4. Quantify Phylogenetic Bias (Pagel's Lambda).
 # ---
 
-
 # 1. Setup ----------------------------------------------------------------
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(tidyverse, here, mgcv, patchwork, phytools, ape, scales)
@@ -27,7 +26,7 @@ global_traits <- read_rds(here("data", "processed", "trait_data.rds"))
 host_traits_analytic <- read_rds(here("data", "analytic", "host_traits_final.rds"))
 
 # The ArHa Database (For raw sampling counts)
-arha_db <- read_rds(here("data", "database", "Project_ArHa_database_2026-01-09.rds"))
+arha_db <- read_rds(here("data", "database", "Project_ArHa_database_2026-08-17.rds"))
 host_data <- arha_db$host
 pathogen_data <- arha_db$pathogen
 mammal_tree <- read.tree(here("data", "processed", "mammal_tree_matched.tre"))
@@ -79,7 +78,6 @@ p_family <- ggplot(family_bias, aes(x = family_label, y = prop_sampled)) +
   # Use a linear percent scale from 0 to 100%
   scale_y_continuous(labels = scales::percent, limits = c(0, 1)) +
   labs(title = "Taxonomic Sampling Coverage", 
-       subtitle = "Proportion of Species Sampled per Family",
        x = NULL, 
        y = "Proportion of Species Sampled") +
   theme_minimal() +
@@ -164,7 +162,6 @@ p_breadth <- ggplot(pathogens_per_host, aes(x = n_viruses_tested)) +
        x = "Unique Viruses Tested per Species", y = "Count of Species") +
   theme_minimal()
 
-
 # 8. Host-Pathogen --------------------------------------------------------
 top_hosts <- pathogens_per_host |> top_n(62, n_viruses_tested) |> pull(host_species)
 
@@ -188,11 +185,10 @@ p_heatmap <- ggplot(heatmap_data, aes(x = pathogen_species_cleaned, y = host_spe
 
 ggsave(here("output", "figures", "co_surveillance.png"), p_heatmap, width = 8, height = 10, bg = "white")
 
-
 # Extended figure bias ----------------------------------------------------
 extended_data_fig_1 <- p_family / (p_syn | p_breadth) +
   plot_annotation(tag_levels = 'a') +
   plot_layout(heights = c(2, 1))
 
 ggsave(here("output", "figures", "supplementary_figure_s2.png"), 
-       extended_data_fig_1, width = 12, height = 10, bg = "white")
+       extended_data_fig_1, width = 10, height = 8, bg = "white")

@@ -9,7 +9,7 @@ pacman::p_load(tidyverse, here, brms, tidybayes, countrycode, cowplot, rnaturale
 fit_dyadic <- read_rds(here("output", "models", "brms_dyadic_N49k.rds"))
 
 # Load Lookup Data
-arha_db <- read_rds(here("data", "database", "Project_ArHa_database_2026-01-09.rds"))
+arha_db <- read_rds(here("data", "database", "Project_ArHa_database_2026-08-17.rds"))
 host_traits <- read_rds(here("data", "analytic", "host_traits_final.rds"))
 
 # 1. Viral Family Differences ---------------------------------------------
@@ -57,9 +57,77 @@ p_virus_box <- ggplot(plot_data_virus, aes(x = pathogen_family, y = r_pathogen_s
         plot.subtitle = element_text(size = 11, colour = "grey30", margin = margin(b = 10)),
         legend.position = "none")
 
-# Combine
-fig_posthoc_virus <- plot_grid(p_virus, p_virus_box, rel_widths = c(1.5, 1))
-ggsave(here("output", "figures", "supplementary_figure_s5.png"), fig_posthoc_virus, width = 12, height = 8, bg = "white")
+# Descriptive: per-species points, violin instead of box
+p_virus_violin <- ggplot(plot_data_virus, aes(x = pathogen_family, y = r_pathogen_species_cleaned, fill = pathogen_family)) +
+  geom_violin(alpha = 0.6, scale = "count") +
+  geom_jitter(width = 0.15, alpha = 0.4, size = 1) +
+  labs(title = "B) Family Comparison", subtitle = "Distribution of per-species intercepts (violin width = N)",
+       x = NULL, y = "Random Intercept") +
+  theme_minimal(base_size = 12) + theme(legend.position = "none", plot.title = element_text(face = "bold", size = 14, margin = margin(b = 5)))
+
+# C) Statistical evidence: full per-draw propagated family difference
+viral_draws_full <- fit_dyadic |>
+  spread_draws(r_pathogen_species_cleaned[pathogen, term]) |>
+  mutate(pathogen = str_replace_all(pathogen, "\\.", " ")) |>
+  left_join(viral_meta, by = c("pathogen" = "pathogen_species_cleaned")) |>
+  drop_na(pathogen_family)
+
+family_diff_draws <- viral_draws_full |>
+  group_by(.draw, pathogen_family) |>
+  summarise(family_mean = mean(r_pathogen_species_cleaned), .groups = "drop") |>
+  pivot_wider(names_from = pathogen_family, values_from = family_mean) |>
+  mutate(diff = Arenaviridae - Hantaviridae)
+
+p_family_diff <- ggplot(family_diff_draws, aes(x = diff, y = 0)) +
+  geom_vline(xintercept = 0, linetype = "dashed", colour = "grey50") +
+  stat_halfeye(fill = "#CC79A7", alpha = 0.7, .width = c(0.5, 0.95)) +
+  labs(title = "C) Family-Level Difference",
+       subtitle = "Posterior: Arenaviridae − Hantaviridae",
+       x = "Difference in Random Intercept (Log-Odds)", y = NULL) +
+  theme_minimal(base_size = 12) +
+  theme(plot.title = element_text(face = "bold", size = 14, margin = margin(b = 5)),
+        plot.subtitle = element_text(size = 11, colour = "grey30", margin = margin(b = 10)),
+        axis.text.y = element_blank(), axis.ticks.y = element_blank())
+
+# Combine all three
+right_col <- plot_grid(p_virus_violin,
+                       p_family_diff,
+                       ncol = 1)
+fig_posthoc_virus <- plot_grid(p_virus,
+                               right_col,
+                               ncol = 2,
+                               rel_widths = c(1.3, 1))
+ggsave(here("output", "figures", "supplementary_figure_s5.png"), fig_posthoc_virus, width = 15, height = 8, bg = "white")
+
+# Full (unsummarized) posterior draws, not median_qi()
+viral_draws_full <- fit_dyadic |>
+  spread_draws(r_pathogen_species_cleaned[pathogen, term]) |>
+  mutate(pathogen = str_replace_all(pathogen, "\\.", " ")) |>
+  left_join(viral_meta, by = c("pathogen" = "pathogen_species_cleaned")) |>
+  drop_na(pathogen_family)
+
+# Family-level mean per posterior draw, then the difference per draw
+family_diff_draws <- viral_draws_full |>
+  group_by(.draw, pathogen_family) |>
+  summarise(family_mean = mean(r_pathogen_species_cleaned), .groups = "drop") |>
+  pivot_wider(names_from = pathogen_family, values_from = family_mean) |>
+  mutate(diff = Arenaviridae - Hantaviridae)
+
+family_diff_draws |>
+  summarise(median_diff = median(diff),
+            lower = quantile(diff, 0.025),
+            upper = quantile(diff, 0.975),
+            pd = mean(diff > 0))
+
+# The posterior of the family-level difference
+p_family_diff <- ggplot(family_diff_draws, aes(x = diff)) +
+  geom_vline(xintercept = 0, linetype = "dashed", colour = "grey50") +
+  stat_halfeye(fill = "#CC79A7", alpha = 0.7, .width = c(0.5, 0.95)) +
+  labs(title = "Arenaviridae − Hantaviridae baseline detectability",
+       subtitle = paste0("Posterior difference in family-mean random intercept (pd = ", 
+                         round(mean(family_diff_draws$diff < 0) * 100, 1), "%)"),
+       x = "Difference (Log-Odds)", y = NULL) +
+  theme_minimal()
 
 # 2. Geographic Residuals -------------------------------------------------
 # Host-Level Predictions

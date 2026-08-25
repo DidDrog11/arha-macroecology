@@ -1,0 +1,56 @@
+Type,Realm,Location,Observed,Predicted,Comparison,Z_Score
+Coldspot (Undersampled),Afrotropic,"Ilala, Dar es Salaam, Tanzania",0,"3,001.10","0 observed vs. 3,001 predicted",-4.2
+Coldspot (Undersampled),Afrotropic,"Windhoek Rural, Khomas, Namibia",0,"2,144.90","0 observed vs. 2,145 predicted",-4
+Coldspot (Undersampled),Afrotropic,"Lake Victoria, Mwanza, Tanzania",0,"1,902.20","0 observed vs. 1,902 predicted",-3.9
+Hotspot (Oversampled),Afrotropic,"Morogoro Urban, Morogoro, Tanzania","16,652",72.90,225x difference,4.4
+Hotspot (Oversampled),Afrotropic,"Esan Central, Edo, Nigeria",668,2.30,204x difference,4.3
+Hotspot (Oversampled),Afrotropic,"Esan West, Edo, Nigeria",766,2.60,212x difference,4.3
+Coldspot (Undersampled),Indomalayan,"Taichung, Taichung, Taiwan",0,"2,238.70","0 observed vs. 2,239 predicted",-4
+Coldspot (Undersampled),Indomalayan,"Taipei, Taipei, Taiwan",0,"2,386.10","0 observed vs. 2,386 predicted",-4
+Coldspot (Undersampled),Indomalayan,"Changhua, Taiwan, Taiwan",0,"2,249.40","0 observed vs. 2,249 predicted",-4
+Hotspot (Oversampled),Indomalayan,"Kepulauan Seribu, Jakarta Raya, Indonesia",229,0.50,149x difference,4.1
+Hotspot (Oversampled),Indomalayan,"Manila, Metropolitan Manila, Philippines",219,0.40,153x difference,4.1
+Hotspot (Oversampled),Indomalayan,"Suwan Khuha, Nong Bua Lam Phu, Thailand",686,3.50,153x difference,4.1
+Coldspot (Undersampled),Nearctic,"Dallas, Texas, United States",0,"1,253.40","0 observed vs. 1,253 predicted",-3.6
+Coldspot (Undersampled),Nearctic,"Tarrant, Texas, United States",0,"1,017.50","0 observed vs. 1,018 predicted",-3.5
+Coldspot (Undersampled),Nearctic,"Cook, Illinois, United States",0,746.10,0 observed vs. 746 predicted,-3.3
+Hotspot (Oversampled),Nearctic,"Lake, Montana, United States","8,813",23.80,355x difference,4.7
+Hotspot (Oversampled),Nearctic,"Pondera, Montana, United States","6,584",15.00,412x difference,4.7
+Hotspot (Oversampled),Nearctic,"Musselshell, Montana, United States","8,159",22.20,351x difference,4.6
+Coldspot (Undersampled),Nearctic-Upper,"Yukon-Koyukuk, Alaska, United States",0,661.50,0 observed vs. 662 predicted,-3.2
+Coldspot (Undersampled),Neotropic,"Antofagasta, Antofagasta, Chile",0,"1,214.20","0 observed vs. 1,214 predicted",-3.6
+Coldspot (Undersampled),Neotropic,"NA, Tarapacá, Chile",0,791.60,0 observed vs. 792 predicted,-3.3
+Coldspot (Undersampled),Neotropic,"El Loa, Antofagasta, Chile",0,670.60,0 observed vs. 671 predicted,-3.2
+Hotspot (Oversampled),Neotropic,"Jaborá, Santa Catarina, Brazil","1,545",0.70,933x difference,5.3
+Hotspot (Oversampled),Neotropic,"General Carneiro, Paraná, Brazil","1,411",1.60,547x difference,4.9
+Hotspot (Oversampled),Neotropic,"Guará, São Paulo, Brazil",560,1.70,209x difference,4.3
+Hotspot (Oversampled),Neotropic-Upper,"Pesé, Herrera, Panama","3,067",6.10,430x difference,4.8
+Hotspot (Oversampled),Neotropic-Upper,"Leonardo Bravo, Guerrero, México",391,0.80,224x difference,4.4
+Hotspot (Oversampled),Neotropic-Upper,"San Pablo Macuiltianguis, Oaxaca, México",150,0.10,140x difference,4.1
+Coldspot (Undersampled),Palearctic-Central,"Kalat, Balochistan, Pakistan",0,"1,378.90","0 observed vs. 1,379 predicted",-3.7
+Coldspot (Undersampled),Palearctic-Central,"Rawalpindi, Punjab, Pakistan",0,"1,161.70","0 observed vs. 1,162 predicted",-3.6
+Coldspot (Undersampled),Palearctic-Central,"Makran, Balochistan, Pakistan",0,595.80,0 observed vs. 596 predicted,-3.2
+Hotspot (Oversampled),Palearctic-Central,"Khankh, Hövsgöl, Mongolia",67,0.80,37x difference,3.2
+Hotspot (Oversampled),Palearctic-Central,"Privolzhskiy rayon, Astrakhan', Russia",390,9.10,39x difference,3.2
+Coldspot (Undersampled),Palearctic-East,"Shanghai, Shanghai, China",0,"4,166.20","0 observed vs. 4,166 predicted",-4.4
+Coldspot (Undersampled),Palearctic-East,"Tianjin, Tianjin, China",0,"2,118.60","0 observed vs. 2,119 predicted",-4
+Coldspot (Undersampled),Palearctic-East,"Suzhou, Jiangsu, China",0,"2,049.20","0 observed vs. 2,049 predicted",-3.9
+Hotspot (Oversampled),Palearctic-East,"Yakovlevskiy rayon, Primor'ye, Russia","7,979",5.20,1278x difference,5.5
+Hotspot (Oversampled),Palearctic-East,"Tōbetsu, Hokkaido, Japan",509,1.10,248x difference,4.4
+Hotspot (Oversampled),Palearctic-East,"Tongchuan, Shaanxi, China","6,443",38.10,165x difference,4.2
+Coldspot (Undersampled),Palearctic-North,"Ostrobothnia, Western Finland, Finland",3,"2,461.90",616x difference,-3.2
+Coldspot (Undersampled),Palearctic-North,"Pirkanmaa, Western Finland, Finland",1,"1,292.10",647x difference,-3.2
+Hotspot (Oversampled),Palearctic-North,"Vindeln, Västerbotten, Sweden","3,611",40.30,87x difference,3.8
+Hotspot (Oversampled),Palearctic-North,"Vännäs, Västerbotten, Sweden",601,11.50,48x difference,3.4
+Hotspot (Oversampled),Palearctic-North,"Umeå, Västerbotten, Sweden","3,968",103.90,38x difference,3.2
+Coldspot (Undersampled),Palearctic-South,"Shurtah al-Dakhlah, Al Wadi al Jadid, Egypt",0,"7,300.50","0 observed vs. 7,300 predicted",-4.8
+Coldspot (Undersampled),Palearctic-South,"Al-Wahat al-Kharijah, Al Wadi al Jadid, Egypt",0,"5,702.60","0 observed vs. 5,703 predicted",-4.6
+Coldspot (Undersampled),Palearctic-South,"Al Jizah (unincorporated), Al Jizah, Egypt",0,"5,249.40","0 observed vs. 5,249 predicted",-4.5
+Hotspot (Oversampled),Palearctic-South,"Al-Manshiyah, Al Iskandariyah, Egypt",861,2.60,243x difference,4.4
+Hotspot (Oversampled),Palearctic-South,"Ribeira Brava, Madeira, Portugal",153,1.10,73x difference,3.6
+Coldspot (Undersampled),Palearctic-West,"Finland Proper, Western Finland, Finland",0,"1,164.70","0 observed vs. 1,165 predicted",-3.6
+Coldspot (Undersampled),Palearctic-West,"Yvelines, Île-de-France, France",0,"1,101.00","0 observed vs. 1,101 predicted",-3.6
+Coldspot (Undersampled),Palearctic-West,"Bouches-du-Rhône, Provence-Alpes-Côte d'Azur, France",0,955.10,0 observed vs. 955 predicted,-3.5
+Hotspot (Oversampled),Palearctic-West,"Luts'kyi, Volyn, Ukraine","1,256",0.80,706x difference,5.1
+Hotspot (Oversampled),Palearctic-West,"Alnashskiy rayon, Udmurt, Russia","2,961",4.60,526x difference,4.9
+Hotspot (Oversampled),Palearctic-West,"Liuboml's'ky, Volyn, Ukraine",424,1.20,192x difference,4.3

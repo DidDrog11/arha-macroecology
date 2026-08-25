@@ -16,7 +16,7 @@ pacman::p_load(tidyverse, here, terra, tidyterra, sf, rnaturalearth,
 # Load Processed Data
 target_orders <- c("RODENTIA", "EULIPOTYPHLA", "SORICOMORPHA", "ERINACEOMORPHA")
 host_traits <- read_rds(here("data", "processed", "trait_data.rds"))
-arha_db <- read_rds(here("data", "database", "Project_ArHa_database_2026-01-09.rds"))
+arha_db <- read_rds(here("data", "database", "Project_ArHa_database_2026-08-17.rds"))
 host_data <- arha_db$host
 
 # Constants
@@ -135,9 +135,11 @@ if (!file.exists(lookup_path)) {
   write_rds(lookup_long, lookup_path)
   writeVector(gadm_proj, here("data", "gadm", "gadm_adm2_simplified.shp"), overwrite = TRUE) 
   } else { 
+    
     lookup_long <- read_rds(lookup_path)
     gadm_proj <- vect(here("data", "gadm", "gadm_adm2_simplified.shp")) 
-    }
+    
+  }
 
 # --- 2b. Finish Remaining Countries (Serial Mode + Batching) ---
 
@@ -547,3 +549,60 @@ points$realm <- extract(realms_vect, points)$BioGeoRelm
 as_tibble(points) |>
   group_by(realm) |>
   summarise(proportion_of_hosts = sum(number_of_hosts, na.rm = TRUE) / sum(points$number_of_hosts))
+
+
+# Revision Table 2: ZINB spatial covariate definitions --------------------
+
+zinb_labels <- tibble(variable = c("pop_dens", "night_light", "travel_time", "host_richness"),
+                      covariate_name = c("Population density", "Night-time light intensity",
+                                         "Accessibility (travel time to nearest city)", "Host species richness"),
+                      unit = c("people / km²", "VIIRS radiance (nW/cm²/sr)", "minutes", "mean species count (raster mean)"),
+                      source = c("WorldPop 2025", "VIIRS 2024", "Weiss et al. 2018", "IUCN range rasterisation"))
+
+revision_table_2 <- model_adm2_data |>
+  select(pop_dens, night_light, travel_time, host_richness) |>
+  pivot_longer(everything(), names_to = "variable", values_to = "value") |>
+  group_by(variable) |>
+  summarise(n = sum(!is.na(value)), min = min(value, na.rm = TRUE),
+            median = median(value, na.rm = TRUE), mean = mean(value, na.rm = TRUE),
+            sd = sd(value, na.rm = TRUE), max = max(value, na.rm = TRUE), .groups = "drop") |>
+  left_join(zinb_labels, by = "variable") |>
+  mutate(across(c(min, median, mean, sd, max), \(x) signif(x, 4))) |>
+  select(covariate_name, unit, source, n, min, median, mean, sd, max)
+
+write_csv(revision_table_2, here("output", "tables", "revision_table_2_zinb_covariates.csv"))
+
+# Night lights vs. Population Density
+
+cor_test_result <- cor.test(model_adm2_data$night_light, model_adm2_data$pop_dens,
+                            method = "spearman", exact = FALSE)
+
+p_corr_check <- ggplot(model_adm2_data, aes(x = log1p(pop_dens), y = log1p(night_light))) +
+  geom_hex(bins = 60) +
+  scale_fill_viridis_c(option = "magma", trans = "log10", name = "N districts") +
+  geom_smooth(method = "gam", formula = y ~ s(x, k = 9), colour = "white", linewidth = 1) +
+  labs(title = "Night-light intensity vs. population density",
+       subtitle = paste0("Spearman r = ", round(cor_test_result$estimate, 2), "; monotonic but non-linear"),
+       x = "log(1 + Population density)", y = "log(1 + Night-light intensity)") +
+  theme_minimal()
+
+ggsave(here("output", "figures", "revision_fig_correlation_light_pop.png"), p_corr_check,
+       width = 7, height = 5, bg = "white")
+
+# Subset 1: high density, essentially no light
+high_dens_no_light <- model_adm2_data |>
+  filter(pop_dens > quantile(pop_dens, 0.9, na.rm = TRUE),
+         night_light < quantile(night_light, 0.1, na.rm = TRUE))
+
+# Subset 2: high light, low density 
+high_light_low_dens <- model_adm2_data |>
+  filter(night_light > quantile(night_light, 0.9, na.rm = TRUE),
+         pop_dens < quantile(pop_dens, 0.1, na.rm = TRUE))
+
+nrow(high_dens_no_light); nrow(high_light_low_dens)
+summary(high_light_low_dens$area_km2)
+
+# --- Does the non-linearity survive in the model's actual (scaled) inputs? ---
+mod_linear_scaled <- gam(s_light ~ s_pop, data = model_adm2_data)
+mod_smooth_scaled  <- gam(s_light ~ s(s_pop, k = 10), data = model_adm2_data, method = "REML")
+summary(mod_linear_scaled); summary(mod_smooth_scaled)

@@ -1,0 +1,16 @@
+region_a,region_b,p_value
+East Asia,Atlantic Forest,1.47e-13
+North America,Atlantic Forest,0.525
+North America,East Asia,7.91e-23
+Rest of World,Atlantic Forest,0.22
+Rest of World,East Asia,4.82e-11
+Rest of World,North America,4.34e-7
+West Africa,Atlantic Forest,0.408
+West Africa,East Asia,1.91e-16
+West Africa,North America,1
+West Africa,Rest of World,2.05e-4
+Western Europe,Atlantic Forest,1
+Western Europe,East Asia,0.568
+Western Europe,North America,1
+Western Europe,Rest of World,1
+Western Europe,West Africa,1

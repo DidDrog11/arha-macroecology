@@ -1,0 +1,16 @@
+Category,Descriptor,Country,Province,District,Mean_Hazard,Mean_Richness
+1-3,High Hazard / Low Richness,Denmark,Syddanmark,Fanø,0.019578993320465088,2
+1-3,High Hazard / Low Richness,Estonia,Lääne-Viru,Kunda,0.01957899145781994,2
+1-3,High Hazard / Low Richness,Netherlands,Noord-Holland,Waterland,0.019575050100684166,2.0099782943725586
+1-3,High Hazard / Low Richness,Norway,Finnmark,Hammerfest,0.018161606043577194,2.000572919845581
+1-3,High Hazard / Low Richness,United States,Michigan,Keweenaw,0.0181538425385952,2
+3-1,Low Hazard / High Richness,Brazil,Pará,Juruti,0.01102842204272747,23.297285079956055
+3-1,Low Hazard / High Richness,Thailand,Prachuap Khiri Khan,Muang Prachuap Khiri Khan,0.011151883751153946,25.312143325805664
+3-1,Low Hazard / High Richness,Ecuador,Orellana,Aguarico,0.011379941366612911,27.906688690185547
+3-1,Low Hazard / High Richness,Indonesia,Bengkulu,Bengkulu,0.011385488323867321,41
+3-1,Low Hazard / High Richness,Malaysia,Sarawak,Miri,0.011470235884189606,47.013206481933594
+3-3,High Hazard / High Richness,Bolivia,Cochabamba,Germán Jordán,0.016308901831507683,27.652109146118164
+3-3,High Hazard / High Richness,México,Oaxaca,Santo Tomás Ocotepec,0.016238011419773102,22.016530990600586
+3-3,High Hazard / High Richness,Peru,Puno,San Antonio de Putina,0.016185136511921883,23.64222526550293
+3-3,High Hazard / High Richness,Kenya,Turkana,Turkana Central,0.01586337387561798,22.06521987915039
+3-3,High Hazard / High Richness,Ecuador,Tungurahua,San Pedro de Pelileo,0.01572304777801037,25.100921630859375

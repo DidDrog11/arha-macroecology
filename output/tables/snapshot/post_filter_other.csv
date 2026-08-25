@@ -1,0 +1,14 @@
+metric,value
+N species in trait data,2695
+N species in global model,633
+Effort anchor (95th pctile log_effort),7.7467
+PC1 variance explained (%),NA
+LORO Spearman rho,0.7673
+AUC Americas,0.8104709212412656
+AUC Asia,0.8317350560190031
+AUC Europe,0.8256117806197737
+AUC Africa,0.8763890294504605
+Genus overlap Americas (%),8.8
+Genus overlap Asia (%),26.7
+Genus overlap Europe (%),37.5
+Genus overlap Africa (%),13

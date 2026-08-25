@@ -57,13 +57,13 @@ add_gbif_ids <- function(df, name_col) {
 
 target_orders <- c("RODENTIA", "EULIPOTYPHLA", "SORICOMORPHA", "ERINACEOMORPHA")
 
-
 # 2. Load ArHa ------------------------------------------------------------
-arha_path <- here("data", "database", "Project_ArHa_database_2026-01-09.rds")
+arha_path <- here("data", "database", "Project_ArHa_database_2026-08-17.rds")
 
 if (!file.exists(arha_path)) {
   message("ArHa database not found. Downloading it from the GitHub repo.")
-  arha_rds_url <- "https://raw.githubusercontent.com/DidDrog11/arenavirus_hantavirus/main/data/database/Project_ArHa_database_2026-01-09.rds"
+  # Need to push this file
+  arha_rds_url <- "https://raw.githubusercontent.com/DidDrog11/arenavirus_hantavirus/main/data/database/Project_ArHa_database_2026-08-17.rds"
   download.file(arha_rds_url, arha_path, mode = "wb") 
   arha_db <- read_rds(arha_path)
 } else {
@@ -73,7 +73,6 @@ if (!file.exists(arha_path)) {
 host_list <- arha_db$host |> 
   distinct(host_species, gbif_id) |> 
   filter(!is.na(host_species))
-
 
 # 3. Load External Databases ----------------------------------------------
 # A. COMBINE (Soria-Auza et al.) - Good for mass, litter size, lifespan

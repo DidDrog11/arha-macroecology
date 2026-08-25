@@ -1,0 +1,5 @@
+covariate_name,unit,source,n,min,median,mean,sd,max
+Host species richness,mean species count (raster mean),IUCN range rasterisation,38897,0,20.17,19.79,7.378,55.82
+Night-time light intensity,VIIRS radiance (nW/cm²/sr),VIIRS 2024,38897,0,0.4525,1.906,5.596,236.7
+Population density,people / km²,WorldPop 2025,38897,0,62.18,307.1,1073,20760
+Accessibility (travel time to nearest city),minutes,Weiss et al. 2018,38897,0,29.05,69.23,195.1,11760
